@@ -105,6 +105,21 @@
 
     <main>
         <section>
+    <h2>📊 لوحة المؤشرات الاقتصادية (تحديث لحظي)</h2>
+    <p>سعر صرف الدولار اليوم: 
+       <span style="color: var(--primary-color); font-weight: bold;">{{ usd_price }} جنيه</span>
+    </p>
+</section>
+
+<section>
+    <h2>📰 آخر أخبار الشركة</h2>
+    <ul>
+        {% for item in news %}
+        <li><strong>{{ item.title }}</strong> - <small>{{ item.date }}</small></li>
+        {% endfor %}
+    </ul>
+</section>
+        <section>
             <h2>صور ومعلومات</h2>
             <img src="Tabeldy.png" alt="شجرة التبلدي">
             <div style="text-align: center; margin-top: 15px;">
