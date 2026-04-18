@@ -36,7 +36,7 @@ def home():
         usd_price = "غير متاح"
     
     company_news = News.query.order_by(News.date_posted.desc()).all()
-    return render_template('index.html', usd_price=usd_price, news=company_news)
+    return render_template('home.html', usd_price=usd_price, news=company_news)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
