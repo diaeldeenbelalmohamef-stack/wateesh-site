@@ -2,96 +2,160 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title> WATEESH  </title> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WATEESH | باحة الوتشين</title>
     
-   <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        color: #333;
-        line-height: 1.6;
-        padding: 20px;
-    }
-    header {
-        background: #35424a;
-        color: #ffffff;
-        padding: 20px;
-        text-align: center;
-        border-bottom: #e8491d 3px solid;
-    }
-    section {
-        background: white;
-        padding: 20px;
-        margin-top: 20px;
-        border-radius: 8px;
-        box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-    }
-</style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* تعريف الألوان العالمية للموقع */
+        :root {
+            --primary-color: #e8491d; /* البرتقالي الخاص بك */
+            --dark-bg: #1a1a2e;       /* خلفية داكنة فخمة */
+            --card-bg: #16213e;       /* لون البطاقات */
+            --text-color: #e9ecef;    /* لون النص */
+            --accent-color: #0f3460;   /* لون إضافي */
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--dark-bg) 100%);
+            color: #ffffff;
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: var(--primary-color) 4px solid;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: fadeInDown 1s ease;
+        }
+
+        main {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        section {
+            background: var(--card-bg);
+            padding: 25px;
+            margin-top: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease; /* لمسة سحرية عند مرور الماوس */
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        section:hover {
+            transform: translateY(-5px); /* القسم يرتفع قليلاً عند لمسه */
+            border-color: var(--primary-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-right: 4px solid var(--primary-color);
+            padding-right: 15px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            margin: 20px auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+
+        img:hover {
+            transform: scale(1.03);
+        }
+
+        .btn-link {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-link:hover {
+            background: #ff5e31;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        ul, ol {
+            background: rgba(255,255,255,0.03);
+            padding: 20px 40px;
+            border-radius: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            background: var(--accent-color);
+            color: #888;
+        }
+
+        /* حركات فنية */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
     <header>
         <h1>موقع WATEESH</h1>
-        <p>مرحباً بك في موقع و باحة الوتشين والوتيشات </p>
+        <p>مرحباً بك في باحة الوتشين والوتيشات المبدعين</p>
     </header>
 
     <main>
         <section>
             <h2>صور ومعلومات</h2>
-            <img src="Tabeldy.png" alt="وصف الصورة" width="500" height="300">
-            <br>
-            <a href="Tabeldy.png">عرض صورة شجرة التبلدي</a>
+            <img src="Tabeldy.png" alt="شجرة التبلدي">
+            <div style="text-align: center;">
+                <a href="Tabeldy.png" class="btn-link">🔗 عرض الصورة الأصلية</a>
+            </div>
         </section>
-
-        <hr>
 
         <section>
             <h2>أمثلة على تنسيق النصوص</h2>
-            <p>ده مثال علي صفحه بسيطه HTML.</p>
-            <p>ده نص <i>مائل</i> </p>
-            <p>ده نص <b>نص مهم</b> </p>
-            <p>ده نص <strong>نص مهم جداً</strong> </p>
-            <p>ده نص <mark>متظلل</mark> </p>
-            <p>ده نص <small>صغير</small> </p>
-            <p>ده نص <u>تحته سطر</u> </p>
-            <p>ده نص <sub>نص سفلي (تحت)</sub> </p>
-            <p>السعر: <del>100$</del> 49$ </p>
-            <p>هذا كتابنا: <ins>CodeBook</ins> </p>
+            <p>هذا النص <mark>مميز</mark> باستخدام تقنيات حديثة.</p>
+            <p>السعر الحصري: <del style="color: #ff4d4d;">100$</del> <b style="color: #2ecc71; font-size: 1.3rem;">49$</b></p>
         </section>
 
-        <hr>
-
         <section>
-            <h2>قوائم المهام والخطوات</h2>
-            
-            <h3>قائمة المهام (غير مرتبة):</h3>
-            <ul>
-                <li>شراء الخضروات</li>
-                <li>طبخ العشاء</li>
-                <li>غسل الاطباق</li>
-            </ul>
-
-            <h3>خطوات البحث (مرتبة):</h3>
-            <ol>
-                <li>فتح المتصفح</li>
-                <li>كتابة عنوان الموقع</li>
-                <li>الضغط على زر البحث</li>
-            </ol>
-
-            <h3>قاموس المصطلحات:</h3>
+            <h2>قاموس الـ Full Stack</h2>
             <dl>
-                <dt>HTML</dt>
-                <dd>هي لغة توصيفيه لبناء صفحات الويب</dd>
-                <dt>CSS</dt>
-                <dd>هي لغة تنسيق تستخدم لتصميم صفحات الويب</dd>
-                <dt>Javascript</dt>
-                <dd>هي لغة برمجه تستخدم لإضافة تفاعلية وديناميكية لصفحات الويب</dd>
+                <dt style="color: var(--primary-color); font-weight: bold;">HTML</dt>
+                <dd>الهيكل العظمي للموقع.</dd>
+                <dt style="color: var(--primary-color); font-weight: bold;">CSS</dt>
+                <dd>الجمال، الألوان، والروح التي نراها الآن.</dd>
+                <dt style="color: var(--primary-color); font-weight: bold;">Stack</dt>
+                <dd>مجموعة الأدوات التي تجعل المطور بطلاً خارقاً.</dd>
             </dl>
         </section>
     </main>
 
     <footer>
-        <p>حقوق النشر © 2026 - موقع WATEESH</p>
+        <p>حقوق النشر © 2026 - تم التطوير بكل حب | WATEESH SITE</p>
     </footer>
 
 </body> 
