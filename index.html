@@ -104,6 +104,20 @@
     </nav>
 
     <main>
+        <div style="background: #333; color: white; padding: 10px; overflow: hidden; white-space: nowrap;">
+    <marquee behavior="scroll" direction="right" onmouseover="this.stop();" onmouseout="this.start();">
+        {% for item in global_news %}
+            <span style="margin-left: 50px;">
+                <strong>[{{ item.category }}]</strong> {{ item.title }}
+            </span>
+        {% endfor %}
+    </marquee>
+</div>
+
+<div style="display: flex; justify-content: space-around; background: #eee; padding: 10px; border-radius: 8px;">
+    <span>💵 سعر الدولار: <b>{{ usd_price }} ج.م</b></span>
+    <span>☀️ حالة الطقس: <b>{{ weather }}</b></span>
+</div>
         <section>
     <h2>📊 لوحة المؤشرات الاقتصادية (تحديث لحظي)</h2>
     <p>سعر صرف الدولار اليوم: 
