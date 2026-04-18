@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WATEESH | باحة الوتيشين</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-
     <style>
-        /* تعريف الألوان العالمية للموقع */
         :root {
-            --primary-color: #e8491d; /* البرتقالي الخاص بك */
-            --dark-bg: #1a1a2e;       /* خلفية داكنة فخمة */
-            --card-bg: #16213e;       /* لون البطاقات */
-            --text-color: #e9ecef;    /* لون النص */
-            --accent-color: #0f3460;   /* لون إضافي */
+            --primary-color: #e8491d;
+            --dark-bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text-color: #e9ecef;
+            --accent-color: #0f3460;
         }
 
         body {
@@ -22,23 +19,35 @@
             background-color: var(--dark-bg);
             color: var(--text-color);
             line-height: 1.8;
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
         }
 
         header {
             background: linear-gradient(135deg, var(--accent-color) 0%, var(--dark-bg) 100%);
             color: #ffffff;
-            padding: 60px 20px;
+            padding: 40px 20px;
             text-align: center;
             border-bottom: var(--primary-color) 4px solid;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            animation: fadeInDown 1s ease;
+        /* تنسيق قائمة التنقل */
+        nav {
+            text-align: center;
+            background: var(--card-bg);
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        nav a {
+            color: var(--text-color);
+            font-weight: bold;
+            margin: 0 15px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
         }
 
         main {
@@ -53,20 +62,10 @@
             margin-top: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-            transition: transform 0.3s ease; /* لمسة سحرية عند مرور الماوس */
             border: 1px solid rgba(255,255,255,0.05);
         }
 
-        section:hover {
-            transform: translateY(-5px); /* القسم يرتفع قليلاً عند لمسه */
-            border-color: var(--primary-color);
-        }
-
-        h2 {
-            color: var(--primary-color);
-            border-right: 4px solid var(--primary-color);
-            padding-right: 15px;
-        }
+        h2 { color: var(--primary-color); border-right: 4px solid var(--primary-color); padding-right: 15px; }
 
         img {
             max-width: 100%;
@@ -75,68 +74,29 @@
             display: block;
             margin: 20px auto;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            transition: 0.3s;
         }
 
-        img:hover {
-            transform: scale(1.03);
-        }
-
-        .btn-link {
-            display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            transition: 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-link:hover {
-            background: #ff5e31;
-            box-shadow: 0 0 15px var(--primary-color);
-        }
-
-        ul, ol {
-            background: rgba(255,255,255,0.03);
-            padding: 20px 40px;
-            border-radius: 10px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-            background: var(--accent-color);
-            color: #888;
-        }
-
-        /* حركات فنية */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        footer { text-align: center; padding: 30px; margin-top: 50px; background: var(--accent-color); color: #888; }
     </style>
 </head>
 <body>
 
     <header>
-
         <h1>موقع WATEESH</h1>
         <p>مرحباً بك في باحة الوتشين والوتيشات المبدعين</p>
     </header>
-    <nav style="text-align: center; margin-top: 20px;">
-    <a href="index.html" style="color: var(--primary-color); font-weight: bold; margin: 0 15px;">الرئيسية</a>
-    <a href="media.h
+
+    <nav>
+        <a href="index.html">الرئيسية</a>
+        <a href="media.html">معرض الميديا</a>
+    </nav>
 
     <main>
         <section>
             <h2>صور ومعلومات</h2>
-            <nav style="text-align: center; margin-top: 20px;">
-        <a href="index.html" style="color: var(--primary-color); font-weight: bold; margin: 0 15px; text-decoration: none;">الرئيسية</a>
-        <a href="media.html" style="color: var(--primary-color); font-weight: bold; margin: 0 15px; text-decoration: none;">معرض الميديا</a>img src="Tabeldy.png" alt="شجرة التبلدي">
-            
+            <img src="Tabeldy.png" alt="شجرة التبلدي">
+            <div style="text-align: center;">
+                <a href="Tabeldy.png" style="color: var(--primary-color); text-decoration: none; font-weight: bold;">🔗 عرض الصورة الأصلية</a>
             </div>
         </section>
 
@@ -153,8 +113,6 @@
                 <dd>الهيكل العظمي للموقع.</dd>
                 <dt style="color: var(--primary-color); font-weight: bold;">CSS</dt>
                 <dd>الجمال، الألوان، والروح التي نراها الآن.</dd>
-                <dt style="color: var(--primary-color); font-weight: bold;">Stack</dt>
-                <dd>مجموعة الأدوات التي تجعل المطور بطلاً خارقاً.</dd>
             </dl>
         </section>
     </main>
