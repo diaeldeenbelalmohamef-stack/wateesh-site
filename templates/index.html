@@ -95,7 +95,7 @@
 
     <header>
         <h1>موقع WATEESH</h1>
-        <p>مرحباً بك في باحة الوتشين والوتيشات المبدعين</p>
+        <p>مرحباً بك في باحة الوتيشين والوتيشات المبدعين</p>
     </header>
 
     <nav>
@@ -104,9 +104,38 @@
     </nav>
 
     <main>
+        <div style="background: #333; color: white; padding: 10px; overflow: hidden; white-space: nowrap;">
+    <marquee behavior="scroll" direction="right" onmouseover="this.stop();" onmouseout="this.start();">
+        {% for item in global_news %}
+            <span style="margin-left: 50px;">
+                <strong>[{{ item.category }}]</strong> {{ item.title }}
+            </span>
+        {% endfor %}
+    </marquee>
+</div>
+
+<div style="display: flex; justify-content: space-around; background: #eee; padding: 10px; border-radius: 8px;">
+    <span>💵 سعر الدولار: <b>{{ usd_price }} ج.م</b></span>
+    <span>☀️ حالة الطقس: <b>{{ weather }}</b></span>
+</div>
+        <section>
+    <h2>📊 لوحة المؤشرات الاقتصادية (تحديث لحظي)</h2>
+    <p>سعر صرف الدولار اليوم: 
+       <span style="color: var(--primary-color); font-weight: bold;">{{ usd_price }} جنيه</span>
+    </p>
+</section>
+
+<section>
+    <h2>📰 آخر أخبار الشركة</h2>
+    <ul>
+        {% for item in news %}
+        <li><strong>{{ item.title }}</strong> - <small>{{ item.date }}</small></li>
+        {% endfor %}
+    </ul>
+</section>
         <section>
             <h2>صور ومعلومات</h2>
-            <img src="Tabeldy.png" alt="شجرة التبلدي">
+            <img src="{{ url_for('static', filename='Tabeldy.png') }}">
             <div style="text-align: center; margin-top: 15px;">
                 <a href="Tabeldy.png" style="color: var(--primary-color); text-decoration: none; font-weight: bold;">🔗 عرض الصورة الأصلية</a>
             </div>
