@@ -42,7 +42,7 @@ def home():
     company_news = News.query.order_by(News.date_posted.desc()).all()
     
     # تأكد من إضافة المتغيرات الجديدة هنا
-    return render_template('index.html', 
+    return render_template('home.html', 
                            usd_price=usd_price, 
                            oil_price=oil_price, 
                            gold_price=gold_price,
