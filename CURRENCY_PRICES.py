@@ -30,14 +30,24 @@ with app.app_context():
 @app.route('/')
 def home():
     try:
-        # ملاحظة: API الأسعار قد يتطلب مفتاحاً أحياناً، لكن هذا سيعمل مبدئياً
         usd_price = requests.get("https://api.exchangerate-api.com/v4/latest/USD").json()['rates']['EGP']
     except:
         usd_price = "غير متاح"
     
+    # قيم تجريبية حالياً (سنربطها بـ API حقيقي لاحقاً)
+    oil_price = "85.40 دولار"
+    gold_price = "2,350 دولار"
+    sports_news = "انطلاق مباريات الدوري السوداني والمحترفين بالخارج"
+    
     company_news = News.query.order_by(News.date_posted.desc()).all()
-    return render_template('home.html', usd_price=usd_price, news=company_news)
-
+    
+    # تأكد من إضافة المتغيرات الجديدة هنا
+    return render_template('index.html', 
+                           usd_price=usd_price, 
+                           oil_price=oil_price, 
+                           gold_price=gold_price,
+                           sports_news=sports_news,
+                           news=company_news)س
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
