@@ -48,8 +48,11 @@
         
         <section>
             <h2>فيديوهات تعليمية</h2>
-            <video controls>
-                <source src="my-video.mp4" type="video/mp4">
+            <video width="640" height="360" controls>
+    <source src="{{ url_for('static', filename='video1.mp4') }}" type="video/mp4">
+    عذراً، متصفحك لا يدعم تشغيل هذا الفيديو.
+</video>
+                
                 متصفحك لا يدعم تشغيل الفيديو.
             </video>
         </section>
