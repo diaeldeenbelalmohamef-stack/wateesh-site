@@ -47,7 +47,7 @@ def home():
                            oil_price=oil_price, 
                            gold_price=gold_price,
                            sports_news=sports_news,
-                           news=company_news)س
+                           news=company_news)سؤؤ
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
