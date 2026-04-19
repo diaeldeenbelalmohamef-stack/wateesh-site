@@ -2,7 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import requests
+import os
+# --- هنا نضع الأسطر المسؤولة عن الميديا (المكان الصحيح) ---
+base_dir = os.path.abspath(os.path.dirname(__file__))
 
+app = Flask(__name__, 
+            template_folder=os.path.join(base_dir, 'templates'),
+            static_folder=os.path.join(base_dir, 'static')) 
+# -------------------------------------------------------
 app = Flask(__name__)
 app.secret_key = "wateesh_2026_key" # ابقِ على هذا المفتاح فقط
 
