@@ -105,6 +105,17 @@ def add_news():
 def logout():
     session.pop('logged_in', None)
     return redirect(url_for('home'))
+# --- مسارات (Routes) صروح الوتيشين الجديدة ---
+
+@app.route('/about')
+def about():
+    # هذا المسار يفتح صفحة "من نحن"
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    # هذا المسار يفتح صفحة "تواصل معنا"
+    return render_template('contact.html')
 
 # 5. تشغيل السيرفر
 if __name__ == '__main__':
