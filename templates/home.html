@@ -91,99 +91,75 @@
         }
     </style>
 </head>
-<body>
-
-    <header>
+<header>
         <h1>موقع WATEESH</h1>
         <p>مرحباً بك في باحة الوتيشين والوتيشات المبدعين</p>
     </header>
 
     <nav>
-        <a href="home.html">الرئيسية</a>
-        <a href="median.html">معرض الميديا</a>
+        <a href="{{ url_for('home') }}">الرئيسية</a>
+        <a href="{{ url_for('median') }}">معرض الميديا</a>
     </nav>
 
     <main>
         <div style="background: #333; color: white; padding: 10px; overflow: hidden; white-space: nowrap;">
-    <marquee behavior="scroll" direction="right" onmouseover="this.stop();" onmouseout="this.start();">
-        {% for item in global_news %}
-            <span style="margin-left: 50px;">
-                <strong>[{{ item.category }}]</strong> {{ item.title }}
-            </span>
-        {% endfor %}
-    </marquee>
-</div>
+            <marquee behavior="scroll" direction="right" onmouseover="this.stop();" onmouseout="this.start();">
+                {% for item in news %}
+                    <span style="margin-left: 50px;">
+                        <strong>[خبر]</strong> {{ item.title }}
+                    </span>
+                {% endfor %}
+            </marquee>
+        </div>
 
-<div style="display: flex; justify-content: space-around; background: #eee; padding: 10px; border-radius: 8px;">
-    <span>💵 سعر الدولار: <b>{{ usd_price }} ج.م</b></span>
-    <span>☀️ حالة الطقس: <b>{{ weather }}</b></span>
-</div>
-<div class="card">
-    <h3>أسعار النفط العالمية 🛢️</h3>
-    <p>{{ oil_price }}</p>
-</div>
+        <div style="display: flex; justify-content: space-around; background: #16213e; padding: 15px; border-radius: 8px; margin-top:10px; border: 1px solid var(--primary-color);">
+            <span>💵 سعر الدولار: <b style="color:var(--primary-color)">{{ usd_price }} ج.م</b></span>
+            <span>⚽ الرياضة: <b>متاحة</b></span>
+        </div>
 
-<div class="card">
-    <h3>أخبار الرياضة ⚽</h3>
-    <p>{{ sports_news }}</p>
-</div>        <section>
-    <h2>📊 لوحة المؤشرات الاقتصادية (تحديث لحظي)</h2>
-    <p>سعر صرف الدولار اليوم: 
-       <span style="color: var(--primary-color); font-weight: bold;">{{ usd_price }} جنيه</span>
-
-    </p>
-    <div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
-    
-    <div class="card p-4" style="background-color: #1a2238; border-right: 5px solid #ff4d00; border-radius: 10px; color: white;">
-        <h3 style="color: #ff4d00;"><i class="fas fa-chart-line"></i> البورصة والنفط العالمي 🛢️</h3>
-        <hr style="border-color: #333;">
-        <p>سعر برميل النفط (برنت): <span style="color: #00ff00;">{{ oil_price }}</span></p>
-        <p>مؤشر الذهب العالمي: <span style="color: #ffd700;">{{ gold_price }}</span></p>
-    </div>
-
-    <div class="card p-4" style="background-color: #1a2238; border-right: 5px solid #00a8ff; border-radius: 10px; color: white;">
-        <h3 style="color: #00a8ff;"><i class="fas fa-running"></i> موجز الرياضة ⚽</h3>
-        <hr style="border-color: #333;">
-        <p>{{ sports_news }}</p>
-        <small style="color: #aaa;">تحديث: لحظة بلحظة</small>
-    </div>
-
-</div>
-</section>
-
-<section>
-    <h2>📰 آخر أخبار الشركة</h2>
-    <ul>
-        {% for item in news %}
-        <li><strong>{{ item.title }}</strong> - <small>{{ item.date }}</small></li>
-        {% endfor %}
-    </ul>
-</section>
         <section>
-            <h2>صور ومعلومات</h2>
-            <img src="{{ url_for('static', filename='Tabeldy.png') }}" width="200">
-  <source src="{{ url_for('static', filename='video1.mp4') }}" type="video/mp4">
-  متصفحك لا يدعم تشغيل الفيديو.
-</video>
-            <div style="text-align: center; margin-top: 15px;">
-                <a href="Tabeldy.png" style="color: var(--primary-color); text-decoration: none; font-weight: bold;">🔗 عرض الصورة الأصلية</a>
+            <h2>📊 لوحة المؤشرات الاقتصادية</h2>
+            <div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+            
+                <div class="card p-4" style="background-color: #1a2238; border-right: 5px solid #ff4d00; border-radius: 10px; color: white; padding:15px;">
+                    <h3 style="color: #ff4d00;">البورصة والنفط العالمي 🛢️</h3>
+                    <hr style="border-color: #333;">
+                    <p>سعر برميل النفط: <span style="color: #00ff00;">{{ oil_price }}</span></p>
+                    <p>مؤشر الذهب العالمي: <span style="color: #ffd700;">{{ gold_price }}</span></p>
+                </div>
+
+                <div class="card p-4" style="background-color: #1a2238; border-right: 5px solid #00a8ff; border-radius: 10px; color: white; padding:15px;">
+                    <h3 style="color: #00a8ff;">موجز الرياضة ⚽</h3>
+                    <hr style="border-color: #333;">
+                    <p>{{ sports_news }}</p>
+                </div>
             </div>
         </section>
 
         <section>
-            <h2>قاموس الـ Full Stack</h2>
-            <dl>
-                <dt style="color: var(--primary-color); font-weight: bold;">HTML</dt>
-                <dd>الهيكل العظمي للموقع.</dd>
-                <dt style="color: var(--primary-color); font-weight: bold;">CSS</dt>
-                <dd>الجمال والألوان والروح.</dd>
-            </dl>
+            <h2>📰 آخر أخبار الشركة</h2>
+            <ul>
+                {% for item in news %}
+                <li style="margin-bottom: 10px;"><strong>{{ item.title }}</strong> - <small>{{ item.date_posted.strftime('%Y-%m-%d') }}</small></li>
+                {% endfor %}
+            </ul>
         </section>
+
+        <section>
+            <h2>الوسائط المتعددة</h2>
+            <img src="{{ url_for('static', filename='Tabeldy.png') }}" alt="Tabeldy Image">
+            
+            <video width="100%" controls style="border-radius:12px;">
+                <source src="{{ url_for('static', filename='video1.mp4') }}" type="video/mp4">
+                متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+        </section>
+
     </main>
 
     <footer>
         <p>حقوق النشر © 2026 | WATEESH SITE</p>
     </footer>
 
-</body> 
+</body>
 </html>
