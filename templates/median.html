@@ -18,62 +18,64 @@
             color: var(--text-color);
             margin: 0; padding: 20px;
         }
-        nav {
-            text-align: center; margin-bottom: 30px;
-        }
+        nav { text-align: center; margin-bottom: 30px; }
         nav a {
             color: var(--primary-color);
             text-decoration: none; font-weight: bold;
             margin: 0 15px; border: 1px solid var(--primary-color);
-            padding: 5px 15px; border-radius: 20px;
+            padding: 8px 20px; border-radius: 20px;
+            transition: 0.3s;
         }
+        nav a:hover { background: var(--primary-color); color: white; }
         .container { max-width: 800px; margin: auto; }
         section {
-            background: var(--card-bg); padding: 20px;
-            border-radius: 15px; margin-bottom: 20px;
-            text-align: center;
+            background: var(--card-bg); padding: 25px;
+            border-radius: 15px; margin-bottom: 25px;
+            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        video, audio { width: 100%; margin-top: 15px; border-radius: 10px; }
+        h1 { text-align: center; color: var(--primary-color); margin-bottom: 30px; }
+        h2 { color: var(--primary-color); font-size: 1.5rem; margin-bottom: 15px; }
+        video, audio { width: 100%; margin-top: 15px; border-radius: 10px; border: 1px solid #333; }
+        img { max-width: 100%; border-radius: 10px; margin-top: 15px; border: 2px solid var(--card-bg); }
+        p { color: #aaa; font-size: 0.9rem; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="home.html">الرئيسية</a>
-        <a href="median.html" style="background: var(--primary-color); color: white;">معرض الميديا</a>
+        <a href="{{ url_for('home') }}">الرئيسية</a>
+        <a href="{{ url_for('median') }}" style="background: var(--primary-color); color: white;">معرض الميديا</a>
     </nav>
 
     <div class="container">
-        <h1>مكتبة الوسائط الخاصة بي</h1>
-        
-        <section>
-            <h2>فيديوهات تعليمية</h2>
-            <video width="640" height="360" controls>
-    <source src="{{ url_for('static', filename='video1.mp4') }}" type="video/mp4">
-    عذراً، متصفحك لا يدعم تشغيل هذا الفيديو.
-</video>
-                
-                متصفحك لا يدعم تشغيل الفيديو.
-            </video>
-            <img src="{{ url_for('static', filename='static/images/Tabeldy.png.') }}">
+
+        <h1>مكتبة وسائط WATEESH</h1>
+<section  style="text-align: center;">
+        <h2>🎥 معرض الميديا</h2>
+    <div class="video-wrapper" style="max-width: 500px; margin: 0 auto; background: #000; border-radius: 12px; border: 3px solid var(--accent-color); overflow: hidden;">
+        <video controls style="width: 100%; display: block;">
+            <source src="{{ url_for('static', filename='video1.mp4') }}" type="video/mp4">
+            متصفحك لا يدعم تشغيل الفيديو.
+        </video>
+    </div>
+</section>
+      
+        <section> 
+             <h2>🌳 ظلال التبلدي الوارفة</h2>
+             <img src="{{ url_for('static', filename='Tabeldy .png') }}" alt="شجرةالتبلدي">
+            <p>رمز الصمود والجمال في بلادي</p>
         </section>
 
+
         <section>
-            <h2>تسجيلات صوتية</h2>
+            <h2>🎶 ألحان خالدة - مزمار</h2>
             <audio controls>
-                <source src="my-audio.mp3" type="audio/mpeg">
+                <source src="{{ url_for('static', filename='my-audio.mp3') }}" type="audio/mpeg">
                 متصفحك لا يدعم تشغيل الصوت.
             </audio>
+            <p>أنغام الموسيقار الراحل حافظ عبد الرحمن - لحن الأيام</p>
         </section>
     </div>
 
 </body>
 </html>
-الخطوة الثانية: ربط الصفحة الرئيسية بصفحة الميديا
-الآن، اذهب لملف index.html (الصفحة الرئيسية) وضف هذا الكود في أعلى الصفحة (تحت الـ header) لكي تستطيع التنقل بينهما:
-
-HTML
-<nav style="text-align: center; margin-top: 20px;">
-    <a href="home.html" style="color: var(--primary-color); font-weight: bold; margin: 0 15px;">الرئيسية</a>
-    <a href="media.html" style="color: var(--primary-color); font-weight: bold; margin: 0 15px;">معرض الميديا</a>
-</nav>
