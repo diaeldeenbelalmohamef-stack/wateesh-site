@@ -103,6 +103,25 @@
     </nav>
 
     <main>
+        <div class="header-container">
+    <img src="tabaldi.png" alt="شجرة التبلدي" class="header-icon">
+    <h1>عنوان الموقع</h1>
+    <img src="tabaldi.png" alt="شجرة التبلدي" class="header-icon">
+</div>
+/* الحاوية الرئيسية للعنوان والأيقونات */
+.header-container {
+    display: flex;
+    align-items: center;      /* لمحاذاة الصور مع النص عمودياً */
+    justify-content: center;   /* لتوسيط المحتوى في منتصف الصفحة */
+    gap: 15px;                /* إضافة مسافة بين الصور والنص */
+}
+
+/* التحكم في حجم صورة شجرة التبلدي */
+.header-icon {
+    width: 2em;               /* استخدام em يجعل حجم الصورة يستجيب لحجم الخط */
+    height: auto;             /* للحفاظ على أبعاد الصورة */
+    max-height: 50px;         /* تحديد أقصى ارتفاع حتى لا تخرج عن السيطرة */
+}
         <div style="background: #333; color: white; padding: 10px; overflow: hidden; white-space: nowrap;">
             <marquee behavior="scroll" direction="right" onmouseover="this.stop();" onmouseout="this.start();">
                 {% for item in news %}
