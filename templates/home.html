@@ -186,6 +186,18 @@
     <h2>الوسائط المتعددة</h2>
     <img src="{{ url_for('static', filename='Tabeldy .png') }}" alt="شجرة التبلدي الكبيرة">
 </section>
+<main>
+    <section class="order-service">
+        <div class="product-card" style="border: 1px solid #ddd; padding: 20px; border-radius: 10px; margin-top: 20px;">
+            <h4>طلب خدمة برمجة</h4>
+            <form action="/order" method="POST">
+                <input type="hidden" name="product_id" value="WTS-01">
+                <label>الكمية المطلوبة:</label>
+                <input type="number" name="quantity" value="1" min="1" class="form-control">
+                <button type="submit" class="btn btn-primary">إرسال الطلب للسيرفر</button>
+            </form>
+        </div>
+    </section>
 
     </main>
 

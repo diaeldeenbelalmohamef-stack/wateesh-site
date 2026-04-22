@@ -16,9 +16,24 @@ app = Flask(__name__,
 app.secret_key = "wateesh_2026_key"
 
 # 2. إعداد قاعدة البيانات (ستنشئ ملف project.db في مجلد instance)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///watasha.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+def init_sqlite_db():
+    conn = sqlite3.connect('watasha.db') # إنشاء أو فتح ملف القاعدة
+    # إنشاء جدول للاستبيانات إذا لم يكن موجوداً
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS survey_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            rating TEXT NOT NULL,
+            feedback TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    conn.close()
+
+# استدعاء الدالة عند تشغيل السيرفر
+init_sqlite_db()
 
 # 3. بيانات الإدارة
 ADMIN_USERNAME = "admin"
@@ -36,7 +51,27 @@ with app.app_context():
     db.create_all()
 
 # --- 4. المسارات (Routes) ---
-
+app.route('/survey', methods=['POST'])
+def handle_survey():
+    # 1. استلام البيانات من الفورم
+    rating = request.form.get('rating')
+    feedback = request.form.get('feedback')
+    
+    # 2. حفظ البيانات في قاعدة البيانات
+    try:
+        with sqlite3.connect("wateesh.db") as users_db:
+            cursor = users_db.cursor()
+            # أمر الـ SQL لإدخال البيانات
+            cursor.execute("""
+                INSERT INTO survey_results (rating, feedback) 
+                VALUES (?, ?)
+            """, (rating, feedback))
+            users_db.commit()
+            
+        return "<h3>شكراً لك! تم حفظ تقييمك بنجاح في قاعدة بيانات WATEESH.</h3>"
+    
+    except Exception as e:
+        return f"حدث خطأ أثناء الحفظ: {e}"
 # الصفحة الرئيسية: تجمع بين عرض الصفحة وجلب أسعار العملات
 @app.route('/')
 def home():
