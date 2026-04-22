@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import requests
 import os
+from flask import Flask, render_template, request, flash, redirect, url_for
+import sqlite3
 
 # 1. إعدادات المسارات (تُكتب مرة واحدة فقط لتجنب تشتت البرنامج)
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -59,7 +61,34 @@ def home():
                            gold_price=gold_price,
                            sports_news=sports_news,
                            news=company_news)
+# مسار معالجة طلبات الشراء
+@app.route('/order', methods=['POST'])
+def handle_order():
+    product_id = request.form.get('product_id')
+    quantity = request.form.get('quantity')
+    
+    # منطق الحفظ في قاعدة البيانات
+    try:
+        conn = sqlite3.connect('wateesh.db')
+        cur = conn.cursor()
+        cur.execute("INSERT INTO orders (product_id, qty) VALUES (?, ?)", (product_id, quantity))
+        conn.commit()
+        conn.close()
+        return "<h3>تم استلام طلبك بنجاح في نظام WATEESH!</h3>"
+    except Exception as e:
+        return f"حدث خطأ: {e}"
 
+# مسار معالجة الاستبيان
+@app.route('/survey', methods=['POST'])
+def handle_survey():
+    rating = request.form.get('rating')
+    feedback = request.form.get('feedback')
+    
+    # يمكنك طباعتها في التيرمينال للتجربة الآن
+    print(f"Feedback Received: {rating} - {feedback}")
+    return "<h3>شكراً لتقييمك، رأيك يطور مشروعنا.</h3>"
+
+# ... (بقية كود تشغيل السيرفر) ...
 # صفحة الميديا (المكان الذي سألت عنه تحديداً)
 @app.route('/median')
 def median():
