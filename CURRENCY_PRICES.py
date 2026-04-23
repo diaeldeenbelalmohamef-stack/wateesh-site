@@ -80,6 +80,7 @@ def home():
     resp.headers['ngrok-skip-browser-warning'] = 'any_value'
     
     return resp
+
 @app.route('/survey', methods=['POST'])
 def handle_survey():
     rating = request.form.get('rating')
@@ -154,5 +155,8 @@ def median():
 @app.route('/about')
 def about():
     return render_template('about.html')
+@app.route('/contact')
+def contact():
+    return render_template('contact.html') # تأكد أن الملف موجود في مجلد templates
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
