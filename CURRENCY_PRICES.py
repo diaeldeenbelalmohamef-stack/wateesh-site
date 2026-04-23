@@ -1,186 +1,158 @@
+import os
+import sqlite3
+import requests
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-import requests
-import os
-from flask import Flask, render_template, request, flash, redirect, url_for
-import sqlite3
+from flask import Flask, render_template, request, make_response # تأكد من استدعاء make_response
 
-# 1. إعدادات المسارات (تُكتب مرة واحدة فقط لتجنب تشتت البرنامج)
+
+
+# 1. إعداد التطبيق الأساسي
 base_dir = os.path.abspath(os.path.dirname(__file__))
-
 app = Flask(__name__, 
             template_folder=os.path.join(base_dir, 'templates'),
             static_folder=os.path.join(base_dir, 'static'))
 
-app.secret_key = "wateesh_2026_key"
+app.secret_key = 'WATEESH_SECRET_2026_PRO'  # مفتاح تشفير الجلسات
 
-# 2. إعداد قاعدة البيانات (ستنشئ ملف project.db في مجلد instance)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///watasha.db'
+# 2. إعداد قاعدة البيانات (وحدناها كلها في wateesh.db)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(base_dir, 'wateesh.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+# دالة لإنشاء جداول SQLite التقليدية (للاستبيانات والطلبات)
 def init_sqlite_db():
-    conn = sqlite3.connect('watasha.db') # إنشاء أو فتح ملف القاعدة
-    # إنشاء جدول للاستبيانات إذا لم يكن موجوداً
-    conn.execute('''
-        CREATE TABLE IF NOT EXISTS survey_results (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            rating TEXT NOT NULL,
-            feedback TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
+    conn = sqlite3.connect(os.path.join(base_dir, 'wateesh.db'))
+    cursor = conn.cursor()
+    # جدول الاستبيانات
+    cursor.execute('''CREATE TABLE IF NOT EXISTS survey_results 
+                      (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                       rating TEXT NOT NULL, 
+                       feedback TEXT, 
+                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
+    # جدول طلبات الشراء
+    cursor.execute('''CREATE TABLE IF NOT EXISTS orders 
+                      (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                       product_id TEXT, 
+                       qty INTEGER, 
+                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
+    conn.commit()
     conn.close()
 
-# استدعاء الدالة عند تشغيل السيرفر
-init_sqlite_db()
-
-# 3. بيانات الإدارة
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "123"
-
-# جدول الأخبار في قاعدة البيانات
+# نموذج الأخبار باستخدام SQLAlchemy
 class News(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text, nullable=False)
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
 
-# إنشاء الجداول تلقائياً
+# إنشاء كل الجداول عند تشغيل السيرفر
 with app.app_context():
+    init_sqlite_db()
     db.create_all()
 
-# --- 4. المسارات (Routes) ---
-app.route('/survey', methods=['POST'])
-def handle_survey():
-    # 1. استلام البيانات من الفورم
-    rating = request.form.get('rating')
-    feedback = request.form.get('feedback')
-    
-    # 2. حفظ البيانات في قاعدة البيانات
-    try:
-        with sqlite3.connect("wateesh.db") as users_db:
-            cursor = users_db.cursor()
-            # أمر الـ SQL لإدخال البيانات
-            cursor.execute("""
-                INSERT INTO survey_results (rating, feedback) 
-                VALUES (?, ?)
-            """, (rating, feedback))
-            users_db.commit()
-            
-        return "<h3>شكراً لك! تم حفظ تقييمك بنجاح في قاعدة بيانات WATEESH.</h3>"
-    
-    except Exception as e:
-        return f"حدث خطأ أثناء الحفظ: {e}"
-# الصفحة الرئيسية: تجمع بين عرض الصفحة وجلب أسعار العملات
+# بيانات الإدارة (البسيطة)
+ADMIN_USER = "admin"
+ADMIN_PASS = "123"
+
+# --- 3. المسارات (Routes) ---
 @app.route('/')
 def home():
     try:
-        # جلب سعر الدولار من الإنترنت (API)
-        response = requests.get("https://api.exchangerate-api.com/v4/latest/USD", timeout=5)
-        usd_price = response.json()['rates']['EGP']
-    except Exception:
-        usd_price = "غير متاح حالياً"
+        # جلب سعر الصرف
+        response = requests.get("https://api.exchangerate-api.com/v4/latest/USD", timeout=3)
+        usd_price = response.json()['rates'].get('EGP', 'غير متاح')
+    except:
+        usd_price = "خطأ في الاتصال"
     
-    # قيم افتراضية لمشروعك
-    oil_price = "85.40 دولار"
-    gold_price = "2,350 دولار"
-    sports_news = "انطلاق مباريات الدوري السوداني والمحترفين بالخارج"
+    # جلب الأخبار من القاعدة لعرضها في الصفحة الرئيسية
+    all_news = News.query.order_by(News.date_posted.desc()).all()
     
-    # جلب الأخبار من قاعدة البيانات لعرضها
-    company_news = News.query.order_by(News.date_posted.desc()).all()
+    # تحضير الـ Response لإضافة الـ Header الخاص بـ ngrok
+    resp = make_response(render_template('home.html', 
+                            usd_price=usd_price, 
+                            news=all_news,
+                            oil_price="85.40$", 
+                            gold_price="2350$"))
     
-    return render_template('home.html', 
-                           usd_price=usd_price, 
-                           oil_price=oil_price, 
-                           gold_price=gold_price,
-                           sports_news=sports_news,
-                           news=company_news)
-# مسار معالجة طلبات الشراء
-@app.route('/order', methods=['POST'])
-def handle_order():
-    product_id = request.form.get('product_id')
-    quantity = request.form.get('quantity')
+    # السطر السحري عشان تتخطى رسالة ngrok الرخمة
+    resp.headers['ngrok-skip-browser-warning'] = 'any_value'
     
-    # منطق الحفظ في قاعدة البيانات
-    try:
-        conn = sqlite3.connect('wateesh.db')
-        cur = conn.cursor()
-        cur.execute("INSERT INTO orders (product_id, qty) VALUES (?, ?)", (product_id, quantity))
-        conn.commit()
-        conn.close()
-        return "<h3>تم استلام طلبك بنجاح في نظام WATEESH!</h3>"
-    except Exception as e:
-        return f"حدث خطأ: {e}"
-
-# مسار معالجة الاستبيان
+    return resp
 @app.route('/survey', methods=['POST'])
 def handle_survey():
     rating = request.form.get('rating')
     feedback = request.form.get('feedback')
-    
-    # يمكنك طباعتها في التيرمينال للتجربة الآن
-    print(f"Feedback Received: {rating} - {feedback}")
-    return "<h3>شكراً لتقييمك، رأيك يطور مشروعنا.</h3>"
+    try:
+        with sqlite3.connect(os.path.join(base_dir, 'wateesh.db')) as conn:
+            conn.execute("INSERT INTO survey_results (rating, feedback) VALUES (?, ?)", (rating, feedback))
+        flash("شكراً لمشاركتك في استبيان WATEESH!")
+    except Exception as e:
+        flash(f"خطأ في الحفظ: {e}")
+    return redirect(url_for('home'))
 
-# ... (بقية كود تشغيل السيرفر) ...
-# صفحة الميديا (المكان الذي سألت عنه تحديداً)
-@app.route('/median')
-def median():
-    return render_template('median.html')
+@app.route('/order', methods=['POST'])
+def handle_order():
+    p_id = request.form.get('product_id')
+    qty = request.form.get('quantity')
+    try:
+        with sqlite3.connect(os.path.join(base_dir, 'wateesh.db')) as conn:
+            conn.execute("INSERT INTO orders (product_id, qty) VALUES (?, ?)", (p_id, qty))
+        return "<h3>تم استلام طلبك بنجاح! سنتواصل معك قريباً.</h3>"
+    except Exception as e:
+        return f"خطأ: {e}"
 
-# صفحة تسجيل الدخول للوحة التحكم
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if request.form.get('username') == ADMIN_USERNAME and request.form.get('password') == ADMIN_PASSWORD:
+        user = request.form.get('username')
+        pw = request.form.get('password')
+        if user == ADMIN_USER and pw == ADMIN_PASS:
             session['logged_in'] = True
             return redirect(url_for('admin_panel'))
-        flash("خطأ في بيانات الدخول!")
+        flash("بيانات الدخول غير صحيحة!")
     return render_template('login.html')
 
-# لوحة التحكم (Admin)
 @app.route('/admin')
 def admin_panel():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
-    all_news = News.query.all()
-    return render_template('admin.html', news=all_news)
+    
+    # جلب الاستبيانات من SQLite
+    conn = sqlite3.connect(os.path.join(base_dir, 'wateesh.db'))
+    conn.row_factory = sqlite3.Row
+    surveys = conn.execute("SELECT * FROM survey_results ORDER BY created_at DESC").fetchall()
+    conn.close()
+    
+    # جلب الأخبار من SQLAlchemy
+    news_list = News.query.all()
+    
+    return render_template('admin.html', surveys=surveys, news=news_list)
 
-# دالة إضافة خبر جديد
 @app.route('/add_news', methods=['POST'])
 def add_news():
-    if not session.get('logged_in'):
-        return redirect(url_for('login'))
-    
-    title = request.form.get('title')
-    content = request.form.get('content')
-    
-    if title and content:
-        new_post = News(title=title, content=content)
-        db.session.add(new_post)
-        db.session.commit()
-        flash("تم إضافة الخبر بنجاح!")
-    
+    if session.get('logged_in'):
+        title = request.form.get('title')
+        content = request.form.get('content')
+        if title and content:
+            new_entry = News(title=title, content=content)
+            db.session.add(new_entry)
+            db.session.commit()
+            flash("تم نشر الخبر بنجاح")
     return redirect(url_for('admin_panel'))
 
-# تسجيل الخروج
 @app.route('/logout')
 def logout():
-    session.pop('logged_in', None)
+    session.clear()
     return redirect(url_for('home'))
-# --- مسارات (Routes) صروح الوتيشين الجديدة ---
 
+# صفحة الميديا
+@app.route('/median')
+def median():
+    return render_template('median.html')
 @app.route('/about')
 def about():
-    # هذا المسار يفتح صفحة "من نحن"
     return render_template('about.html')
-
-@app.route('/contact')
-def contact():
-    # هذا المسار يفتح صفحة "تواصل معنا"
-    return render_template('contact.html')
-
-# 5. تشغيل السيرفر
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
