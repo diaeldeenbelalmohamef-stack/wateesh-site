@@ -87,34 +87,12 @@ def products():
     return render_template('products.html', products=all_products)
 
 @app.route('/checkout/<int:product_id>')
-def old_checkout(product_id):
+def checkout(product_id):
     # بدلاً من Product.query.get_or_404
     product = db.session.get(Product, product_id)
     if not product:
         return "المنتج غير موجود", 404
     return render_template('checkout.html', product=product)
-
-@app.route('/checkout', methods=['GET', 'POST'])
-def checkout():
-    if request.method == 'POST':
-        # 1. استقبال البيانات من الـ Form
-        name = request.form.get('name')
-        phone = request.form.get('phone')
-        payment_method = request.form.get('payment') # استلام طريقة الدفع
-        
-        # 2. تعيين سعر افتراضي (بما أن السعر لم يرسل من الـ HTML حالياً)
-        subtotal = 1000 # يمكنك تغييره لاحقاً ليكون ديناميكياً
-        
-        # 3. الحسابات
-        tax_rate = 0.15
-        tax_amount = subtotal * tax_rate
-        total_price = subtotal + tax_amount
-        
-        # 4. التوجيه لصفحة نجاح بدلاً من إرجاع نص جاف
-        # يفضل إنشاء ملف success.html بسيط
-      
-   # 4. التوجيه لصفحة نجاح (الملف الذي صممته)
-        return render_template('order_success.html', name=name, total=total_price)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
