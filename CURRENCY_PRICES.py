@@ -86,7 +86,7 @@ def products():
     all_products = Product.query.all()
     return render_template('products.html', products=all_products)
 
-@app.route('/checkout/<int:product_id>')
+@app.route('/checkout/<int:product_id>', methods=['GET', 'POST'])
 def checkout(product_id):
     # بدلاً من Product.query.get_or_404
     product = db.session.get(Product, product_id)
