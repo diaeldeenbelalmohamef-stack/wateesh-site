@@ -8,7 +8,7 @@ from flask_login import login_required
 from flask_login import UserMixin
 from flask_login import login_user
 from flask_login import logout_user
-
+from flask import request, render_template
 
 
 app = Flask(__name__)
@@ -81,12 +81,44 @@ def products():
     return render_template('products.html', products=all_products)
 
 @app.route('/checkout/<int:product_id>')
-def checkout(product_id):
+def old_checkout(product_id):
     # بدلاً من Product.query.get_or_404
     product = db.session.get(Product, product_id)
     if not product:
         return "المنتج غير موجود", 404
     return render_template('checkout.html', product=product)
+
+@app.route('/checkout', methods=['GET', 'POST']) # تأكد من وجود POST هنا
+def checkout():
+    if request.method == 'POST':
+        # 1. استقبال البيانات من النموذج (Form)
+        name = request.form.get('name')
+        phone = request.form.get('phone')
+        subtotal = float(request.form.get('subtotal', 0))  # المبلغ الأساسي
+        # أرشيف وهمي (قائمة لتخزين الفواتير في الذاكرة)
+        invoice_archive = []
+        # 2. عمليات حساب الضريبة (مثلاً 15%)
+        tax_rate = 0.15
+        tax_amount = subtotal * tax_rate
+        total_price = subtotal + tax_amount
+        
+        # 3. إنشاء سجل الفاتورة (الأرشفة)
+        invoice_data = {
+            "invoice_id": len(invoice_archive) + 1,
+            "customer_name": name,
+            "phone": phone,
+            "subtotal": subtotal,
+            "tax": tax_amount,
+            "total": total_price
+        }
+        
+        # حفظ في الأرشيف الداخلي
+        invoice_archive.append(invoice_data)
+        
+        # 4. رسالة النجاح (يمكنك تمرير البيانات لصفحة HTML)
+        return f"تم إصدار الفاتورة رقم {invoice_data['invoice_id']} بنجاح. المبلغ الإجمالي: {total_price} ريال."
+
+    return render_template('checkout.html') 
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
