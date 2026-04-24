@@ -94,37 +94,27 @@ def old_checkout(product_id):
         return "المنتج غير موجود", 404
     return render_template('checkout.html', product=product)
 
-@app.route('/checkout', methods=['GET', 'POST']) # تأكد من وجود POST هنا
+@app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     if request.method == 'POST':
-        # 1. استقبال البيانات من النموذج (Form)
+        # 1. استقبال البيانات من الـ Form
         name = request.form.get('name')
         phone = request.form.get('phone')
-        subtotal = float(request.form.get('subtotal', 0))  # المبلغ الأساسي
-        # أرشيف وهمي (قائمة لتخزين الفواتير في الذاكرة)
-        invoice_archive = []
-        # 2. عمليات حساب الضريبة (مثلاً 15%)
+        payment_method = request.form.get('payment') # استلام طريقة الدفع
+        
+        # 2. تعيين سعر افتراضي (بما أن السعر لم يرسل من الـ HTML حالياً)
+        subtotal = 1000 # يمكنك تغييره لاحقاً ليكون ديناميكياً
+        
+        # 3. الحسابات
         tax_rate = 0.15
         tax_amount = subtotal * tax_rate
         total_price = subtotal + tax_amount
         
-        # 3. إنشاء سجل الفاتورة (الأرشفة)
-        invoice_data = {
-            "invoice_id": len(invoice_archive) + 1,
-            "customer_name": name,
-            "phone": phone,
-            "subtotal": subtotal,
-            "tax": tax_amount,
-            "total": total_price
-        }
-        
-        # حفظ في الأرشيف الداخلي
-        invoice_archive.append(invoice_data)
-        
-        # 4. رسالة النجاح (يمكنك تمرير البيانات لصفحة HTML)
-        return f"تم إصدار الفاتورة رقم {invoice_data['invoice_id']} بنجاح. المبلغ الإجمالي: {total_price} ريال."
+        # 4. التوجيه لصفحة نجاح بدلاً من إرجاع نص جاف
+        # يفضل إنشاء ملف success.html بسيط
+        return f"شكراً يا {name}! تم استلام طلبك عبر ({payment_method}). الإجمالي: {total_price} ريال. سنتواصل معك على {phone}."
 
-    return render_template('checkout.html') 
+    return render_template('checkout.html')
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
