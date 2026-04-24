@@ -112,9 +112,9 @@ def checkout():
         
         # 4. التوجيه لصفحة نجاح بدلاً من إرجاع نص جاف
         # يفضل إنشاء ملف success.html بسيط
-        return f"شكراً يا {name}! تم استلام طلبك عبر ({payment_method}). الإجمالي: {total_price} ريال. سنتواصل معك على {phone}."
-
-    return render_template('checkout.html')
+      
+   # 4. التوجيه لصفحة نجاح (الملف الذي صممته)
+        return render_template('order_success.html', name=name, total=total_price)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
