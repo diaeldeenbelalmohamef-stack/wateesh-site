@@ -3,6 +3,13 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from flask_login import LoginManager
+from flask_login import login_required
+from flask_login import UserMixin
+from flask_login import login_user
+from flask_login import logout_user
+
+
 
 app = Flask(__name__)
 app.secret_key = 'wateesh_2026_safe'
@@ -14,6 +21,19 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
 
 db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# تحديد الصفحة التي يتم توجيه المستخدم إليها إذا حاول الدخول وهو غير مسجل
+login_manager.login_view = 'login'
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False) # تأكد من تشفيرها مستقبلاً
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))    
 
 # --- 1. تعريف النماذج (Models) أولاً ---
 
@@ -32,8 +52,12 @@ class Survey(db.Model):
 # --- 2. إنشاء الجداول وإضافة البيانات (خارج الكلاسات) ---
 
 with app.app_context():
-    db.create_all()  # ينشئ الجداول بناءً على الكلاسات أعلاه
-    
+    db.create_all()
+    # إضافة مستخدم أدمن تجريبي
+    if not User.query.filter_by(username="admin").first():
+        admin = User(username="admin", password="123") # يفضل تشفيرها لاحقاً
+        db.session.add(admin)
+        db.session.commit()
     # إضافة منتج تجريبي إذا كانت القاعدة فارغة
     if not Product.query.first():
         p = Product(name="منتج تجريبي من واتيش", price="5000", description="وصف المنتج الأول")
@@ -73,12 +97,31 @@ def about():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        user_in = request.form.get('username')
+        pass_in = request.form.get('password')
+        user = User.query.filter_by(username=user_in).first()
+        
+        if user and user.password == pass_in: # تأكد من مطابقة كلمة المرور
+            login_user(user)
+            return redirect(url_for('admin_panel'))
+        else:
+            flash('خطأ في اسم المستخدم أو كلمة المرور')
+            
     return render_template('login.html')
 
 @app.route('/admin')
+@login_required
 def admin_panel():
+    # Only logged-in users can see this
     surveys = Survey.query.all()
     return render_template('admin.html', surveys=surveys) 
+@app.route('/logout')
+def logout():
+    logout_user()
+    flash('تم تسجيل الخروج بنجاح')
+    return redirect(url_for('login'))
+
 
 @app.route('/manage_gallery')
 def show_products():

@@ -4,29 +4,28 @@
     <meta charset="UTF-8">
     <title>لوحة التحكم | WATEESH</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f7f6; padding: 20px; text-align: right; }
-        .container { background: white; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .item { border-right: 4px solid #007bff; background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 4px; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; padding: 20px; direction: rtl; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 600px; margin: auto; }
+        .survey-item { border-right: 5px solid #1a73e8; background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 4px; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="card">
         <h1>🔐 لوحة التحكم</h1>
-        <p>مرحباً بك في نظام الإدارة.</p>
-        
         <h3>الاستبيانات المستلمة:</h3>
+
         {% for item in surveys %}
-            <div class="item">
-                <strong>الرقم: {{ item.id }}</strong>
-                <p>الرسالة: {{ item.feedback }}</p>
-                <small>التاريخ: {{ item.created_at }}</small>
+            <div class="survey-item">
+                <strong>استبيان رقم: {{ item.id }}</strong>
+                <p>المحتوى: {{ item.feedback }}</p>
+                <small>التوقيت: {{ item.created_at }}</small>
             </div>
         {% else %}
-            <p>لا توجد استبيانات مسجلة حتى الآن.</p>
+            <p>لا توجد بيانات لعرضها حالياً.</p>
         {% endfor %}
 
         <hr>
-        <a href="{{ url_for('home') }}">العودة للرئيسية</a>
+        <a href="{{ url_for('home') }}">الرجوع للرئيسية</a>
     </div>
 </body>
 </html>
