@@ -44,6 +44,12 @@ class Product(db.Model):
     price = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text)
     image_url = db.Column(db.String(200))
+class Gallery(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    desc = db.Column(db.Text)
+    file_url = db.Column(db.String(200), nullable=False)
+    is_video = db.Column(db.Boolean, default=False)    
 
 class Survey(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -123,10 +129,20 @@ def checkout():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
-        # هنا يمكنك إضافة كود حفظ رسائل التواصل في قاعدة البيانات مستقبلاً
+        # 1. استلام البيانات من حقول الـ HTML (تأكد أن الـ name في HTML مطابق)
+        user_feedback = request.form.get('message') # أو اسم الحقل عندك
+        
+        # 2. إنشاء سجل جديد في قاعدة البيانات
+        new_message = Survey(feedback=user_feedback)
+        
+        # 3. حفظ البيانات
+        db.session.add(new_message)
+        db.session.commit()
+        
+        flash('شكراً لك! تم استلام رسالتك بنجاح.')
         return redirect(url_for('home'))
+        
     return render_template('contact.html')
-
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -161,7 +177,9 @@ def logout():
 
 @app.route('/manage_gallery')
 def show_products():
-    return render_template('show_products.html', gallery_items=[])
+    # جلب العناصر من قاعدة البيانات
+    items = Gallery.query.all() 
+    return render_template('show_products.html', gallery_items=items)
 
 @app.route('/success')
 def success():
