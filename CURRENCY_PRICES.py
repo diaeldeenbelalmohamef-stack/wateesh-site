@@ -31,9 +31,10 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False) # تأكد من تشفيرها مستقبلاً
-@login_manager.user_loader
+@login_manager.user_loader   
 def load_user(user_id):
-    return User.query.get(int(user_id))    
+    # بدلاً من User.query.get
+    return db.session.get(User, int(user_id))  
 
 # --- 1. تعريف النماذج (Models) أولاً ---
 
@@ -81,7 +82,10 @@ def products():
 
 @app.route('/checkout/<int:product_id>')
 def checkout(product_id):
-    product = Product.query.get_or_404(product_id)
+    # بدلاً من Product.query.get_or_404
+    product = db.session.get(Product, product_id)
+    if not product:
+        return "المنتج غير موجود", 404
     return render_template('checkout.html', product=product)
 
 @app.route('/contact', methods=['GET', 'POST'])

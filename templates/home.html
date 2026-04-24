@@ -177,9 +177,10 @@
         <section>
             <h2>📰 آخر أخبار الشركة</h2>
             <ul style="list-style: none; padding: 0;">
-               {% for n in news %}
-    <p>{{ n.title }}</p>
-    <span>{{ n.date_posted }}</span> {% endfor %}
+                {% for n in news %}
+                <li style="border-bottom: 1px solid rgba(255,255,255,0.1); padding: 10px 0;">
+                    <h4 style="margin: 0; color: var(--text-color);">{{ n.title }}</h4>
+                    <small style="color: #888;">{{ n.date_posted }}</small>
                 </li>
                 {% endfor %}
             </ul>
