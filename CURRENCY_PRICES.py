@@ -149,6 +149,9 @@ def logout():
     return redirect(url_for('home'))
 
 # صفحة الميديا
+@app.route('/home')
+def home():
+    return render_template('home.html')
 @app.route('/median')
 def median():
     return render_template('median.html')
