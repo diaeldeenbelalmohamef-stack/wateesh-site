@@ -2,54 +2,30 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم | WATEESH Admin</title>
+    <title>لوحة التحكم | WATEESH</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 10px; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"], textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        button { background-color: #1a73e8; color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 16px; width: 100%; }
-        button:hover { background-color: #1557b0; }
-        .logout-btn { background-color: #d93025; margin-top: 10px; }
-        .news-list { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
-        .news-item { background: #f8f9fa; padding: 10px; margin-bottom: 10px; border-radius: 5px; border-right: 5px solid #1a73e8; }
+        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; direction: rtl; }
+        .container { background: white; padding: 20px; border-radius: 10px; max-width: 700px; margin: auto; }
+        .item { border-right: 5px solid #1a73e8; background: #fafafa; padding: 10px; margin: 10px 0; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🔐 لوحة تحكم الإدارة</h1>
-        <p>مرحباً بك يا مدير، يمكنك إضافة أخبار الشركة من هنا.</p>
-
-        <form action="/add_news" method="POST">
-            <div class="form-group">
-                <label>عنوان الخبر:</label>
-                <input type="text" name="title" placeholder="أدخل عنوان الخبر..." required>
-            </div>
-            <div class="form-group">
-                <label>تفاصيل الخبر:</label>
-                <textarea name="content" rows="5" placeholder="اكتب تفاصيل الخبر هنا..." required></textarea>
-            </div>
-            <button type="submit">نشر الخبر الآن</button>
-        </form>
-
-        <a href="/logout"><button class="logout-btn">تسجيل الخروج</button></a>
-
-        <div class="news-list">
-            <h3>الأخبار المنشورة حالياً:</h3>
-            {% for item in news %}
-            <div class="news-item">
-                <strong>{{ item.title }}</strong>
-                <br>
-                <small>تاريخ النشر: {{ item.date_posted.strftime('%Y-%m-%d') }}</small>
-            </div>
-            {% endfor %}
-        </div>
         
-        <br>
-        <a href="{{ url_for('home') }}">الرجوع للصفحة الرئيسية</a>
+        <h3>الاستبيانات المستلمة:</h3>
+        {% for item in surveys %}
+            <div class="item">
+                <strong>الرقم: {{ item.id }}</strong>
+                <p>{{ item.feedback }}</p>
+                <small>التاريخ: {{ item.created_at }}</small>
+            </div>
+        {% else %}
+            <p>لا توجد استبيانات حالياً.</p>
+        {% endfor %}
+
+        <hr>
+        <a href="{{ url_for('home') }}">العودة للرئيسية</a>
     </div>
 </body>
 </html>

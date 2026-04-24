@@ -2,26 +2,120 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>تسجيل الدخول - واتيش</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول | WATEESH Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .login-container { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 300px; text-align: center; }
-        h2 { color: #333; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background-color: #28a745; border: none; color: white; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        button:hover { background-color: #218838; }
-        .error-message { color: white; background-color: #dc3545; padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 14px; }
+        :root {
+            --primary-color: #e8491d;
+            --dark-bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text-color: #e9ecef;
+        }
+
+        body { 
+            font-family: 'Tajawal', sans-serif; 
+            background-color: var(--dark-bg); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            color: var(--text-color);
+        }
+
+        .login-container { 
+            background: var(--card-bg); 
+            padding: 2.5rem; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            width: 350px; 
+            text-align: center; 
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .login-container h2 { 
+            color: var(--primary-color); 
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .login-container p {
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 10px 0; 
+            border: 1px solid #2c3e50; 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            background: #0f3460;
+            color: white;
+            font-family: 'Tajawal', sans-serif;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(232, 73, 29, 0.2);
+        }
+
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            background-color: var(--primary-color); 
+            border: none; 
+            color: white; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: bold;
+            font-family: 'Tajawal', sans-serif;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover { 
+            background-color: #ff5722; 
+            transform: translateY(-2px);
+        }
+
+        .error-message { 
+            color: #ff4d4d; 
+            background-color: rgba(255, 77, 77, 0.1); 
+            padding: 10px; 
+            border-radius: 8px; 
+            margin-bottom: 15px; 
+            font-size: 14px; 
+            border: 1px solid rgba(255, 77, 77, 0.2);
+        }
+
+        .footer-link {
+            margin-top: 20px;
+            font-size: 0.8em;
+        }
+
+        .footer-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 
     <div class="login-container">
-        <h2>تسجيل الدخول</h2>
+        <h2>WATEESH LOGIN</h2>
+        <p>الوصول إلى لوحة التحكم الإدارية</p>
 
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             {% for message in messages %}
-              <div class="error-message">{{ message }}</div>
+              <div class="error-message">⚠️ {{ message }}</div>
             {% endfor %}
           {% endif %}
         {% endwith %}
@@ -29,8 +123,12 @@
         <form method="POST">
             <input type="text" name="username" placeholder="اسم المستخدم" required>
             <input type="password" name="password" placeholder="كلمة المرور" required>
-            <button type="submit">دخول</button>
+            <button type="submit">دخول للمنصة</button>
         </form>
+
+        <div class="footer-link">
+            <a href="{{ url_for('home') }}">← العودة للموقع الرئيسي</a>
+        </div>
     </div>
 
 </body>

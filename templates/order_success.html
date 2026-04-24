@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WATEESH | تم الطلب بنجاح</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #e8491d;
+            --dark-bg: #1a1a2e;
+            --card-bg: #16213e;
+            --success-color: #00ff88;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .success-card {
+            background: var(--card-bg);
+            padding: 50px 30px;
+            border-radius: 25px;
+            border: 1px solid rgba(232, 73, 29, 0.3);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+            max-width: 450px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            border: 2px solid var(--success-color);
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .icon {
+            font-size: 40px;
+            color: var(--success-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(232, 73, 29, 0.3);
+        }
+
+        .back-btn:hover {
+            background: #ff5722;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(232, 73, 29, 0.5);
+        }
+
+        .order-id {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="success-card">
+        <div class="icon-box">
+            <div class="icon">✓</div>
+        </div>
+        <h1>تم استلام طلبك بنجاح!</h1>
+        <p>شكراً لثقتك في <strong>WATEESH</strong>. لقد تم تسجيل طلبك في نظامنا، وسيقوم فريقنا بالتواصل معك قريباً لتأكيد تفاصيل التوصيل.</p>
+        
+        <a href="{{ url_for('home') }}" class="back-btn">العودة للرئيسية</a>
+        
+        <div class="order-id">
+            سيتم إرسال فاتورة التفاصيل إلى بريدك الإلكتروني قريباً.
+        </div>
+    </div>
+
+</body>
+</html>

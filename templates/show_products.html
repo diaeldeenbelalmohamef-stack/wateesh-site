@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WATEESH | إدارة المعرض</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #e8491d; 
+            --bg: #1a1a2e; 
+            --card: #16213e; 
+            --text: #e9ecef; 
+        }
+        
+        body { 
+            font-family: 'Tajawal', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        nav {
+            background: var(--card);
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        nav a:hover { color: var(--primary); }
+
+        .ticker {
+            background: var(--primary);
+            color: white;
+            padding: 8px 0;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .admin-section { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        
+        h1 { text-align: center; color: var(--primary); margin-bottom: 40px; }
+
+        .upload-box { 
+            background: var(--card); 
+            padding: 40px; 
+            border-radius: 20px; 
+            border: 2px dashed rgba(232, 73, 29, 0.4); 
+            margin-bottom: 60px; 
+            text-align: center;
+            transition: 0.3s;
+        }
+        .upload-box:hover { border-color: var(--primary); background: rgba(22, 33, 62, 0.8); }
+        
+        .gallery-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 30px; 
+        }
+
+        .media-card { 
+            background: var(--card); 
+            border-radius: 15px; 
+            overflow: hidden; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .media-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+
+        .media-card video, .media-card img { 
+            width: 100%; 
+            height: 240px; 
+            object-fit: cover; 
+            background: #000;
+        }
+
+        .info { padding: 25px; text-align: center; }
+        .info h4 { margin: 0 0 12px 0; color: var(--primary); font-size: 1.3em; }
+        .info p { font-size: 0.95em; color: #b0b0b0; line-height: 1.6; height: 50px; overflow: hidden; }
+
+        input, textarea, button { 
+            width: 100%; 
+            padding: 14px; 
+            margin: 12px 0; 
+            border-radius: 10px; 
+            border: 1px solid #2c3e50; 
+            background: #0f3460; 
+            color: white;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        input[type="file"] { background: transparent; border: none; cursor: pointer; }
+
+        button { 
+            background: var(--primary); 
+            border: none; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 1.1em;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        button:hover { background: #ff5722; transform: scale(1.02); }
+
+        .empty-msg { text-align: center; padding: 50px; color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="{{ url_for('home') }}">الرئيسية</a>
+        <a href="{{ url_for('products') }}">المتجر</a> 
+        <a href="{{ url_for('show_products') }}">المعرض</a> 
+        <a href="{{ url_for('contact') }}">تواصل معنا</a>
+    </nav>
+
+    {% if news %}
+    <div class="ticker">
+        <marquee direction="right" scrollamount="6">
+            {% for n in news %} 🔥 {{ n.title }} &nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; {% endfor %}
+        </marquee>
+    </div>
+    {% endif %}
+
+    <main class="admin-section">
+        <h1>🚀 إدارة محتوى المعرض</h1>
+
+        <div class="upload-box">
+            <h3 style="margin-top: 0;">إضافة فيديو أو صورة جديدة</h3>
+            <p style="color: #888; margin-bottom: 25px;">شارك أحدث العروض والمنتجات مع جمهور واتيش</p>
+            <form action="/add_content" method="POST" enctype="multipart/form-data">
+                <input type="text" name="title" placeholder="عنوان المحتوى (مثال: عرض الصيف)" required>
+                <textarea name="desc" placeholder="اكتب وصفاً جذاباً للمحتوى..." rows="3"></textarea>
+                
+                <div style="text-align: right; margin-top: 15px;">
+                    <label>اختر ملف الميديا (صور أو فيديوهات MP4):</label>
+                    <input type="file" name="file" accept="image/*,video/mp4" required>
+                </div>
+                
+                <button type="submit">نشر المحتوى الآن ✅</button>
+            </form>
+        </div>
+
+        <h2>📦 المحتوى المعروض حالياً</h2>
+        <div class="gallery-grid">
+            {% for item in gallery_items %}
+            <div class="media-card">
+                {% if item.is_video %}
+                    <video muted loop onmouseover="this.play()" onmouseout="this.pause()" controls>
+                        <source src="{{ item.file_url }}" type="video/mp4">
+                        متصفحك لا يدعم تشغيل الفيديو.
+                    </video>
+                {% else %}
+                    <img src="{{ item.file_url }}" alt="{{ item.title }}">
+                {% endif %}
+                
+                <div class="info">
+                    <h4>{{ item.title }}</h4>
+                    <p>{{ item.desc }}</p>
+                    <div style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+                        <a href="{{ url_for('products') }}" style="color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9em;">انتقل لصفحة المنتج ←</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="empty-msg" style="grid-column: 1/-1;">
+                <p>المعرض فارغ حالياً.. بانتظار إبداعك الأول!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 40px; color: #444; font-size: 0.8em;">
+        WATEESH Gallery System &copy; 2026
+    </footer>
+
+</body>
+</html>

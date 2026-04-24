@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WATEESH | معرض المنتجات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #e8491d;
+            --dark-bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text-color: #e9ecef;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* القائمة العلوية */
+        nav {
+            text-align: center;
+            background: var(--card-bg);
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: var(--text-color);
+            font-weight: bold;
+            margin: 0 15px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: var(--primary-color); }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+            padding: 20px 0;
+        }
+
+        .product-card { 
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 15px; 
+            padding: 20px; 
+            text-align: center; 
+            transition: transform 0.3s, border-color 0.3s; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4); 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--primary-color);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            background: #0f3460;
+        }
+
+        .product-card h3 {
+            margin: 10px 0;
+            font-size: 1.4em;
+        }
+
+        .product-card p {
+            font-size: 0.9em;
+            color: #ccc;
+            height: 50px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .price { 
+            color: var(--primary-color); 
+            font-size: 1.5em; 
+            font-weight: bold; 
+            margin: 10px 0;
+            display: block;
+        }
+
+        .buy-btn { 
+            background: var(--primary-color); 
+            color: white; 
+            padding: 12px 25px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            display: block; 
+            font-weight: bold;
+            transition: 0.3s; 
+            margin-top: 10px;
+        }
+
+        .buy-btn:hover { 
+            background: #ff5722; 
+            box-shadow: 0 5px 15px rgba(232, 73, 29, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="{{ url_for('home') }}">الرئيسية</a>
+        <a href="{{ url_for('products') }}">عرض المنتجات</a>
+        <a href="{{ url_for('median') }}">الميديا</a>
+        <a href="{{ url_for('about') }}">من نحن</a>
+    </nav>
+
+    <main class="container">
+        <h1 style="text-align: center; margin: 40px 0; color: var(--primary-color); font-size: 2.5em;">منتجات WATEESH الحصرية</h1>
+        
+        <div class="product-grid">
+            {% for p in products %}
+            <div class="product-card">
+                <div>
+                    <img src="{{ p.image_url if p.image_url else url_for('static', filename='default_product.png') }}" alt="{{ p.name }}">
+                    <h3>{{ p.name }}</h3>
+                    <p>{{ p.description if p.description else 'وصف المنتج غير متوفر حالياً.' }}</p>
+                </div>
+                <div>
+                    <span class="price">{{ p.price }} ج.س</span>
+                    <a href="{{ url_for('checkout', product_id=p.id) }}" class="buy-btn">شراء الآن 🛒</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 WATEESH - جميع الحقوق محفوظة</p>
+    </footer>
+
+</body>
+</html>
