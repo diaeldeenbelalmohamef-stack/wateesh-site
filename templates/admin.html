@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <title>لوحة التحكم | WATEESH</title>
     <style>
-        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; direction: rtl; }
-        .container { background: white; padding: 20px; border-radius: 10px; max-width: 700px; margin: auto; }
-        .item { border-right: 5px solid #1a73e8; background: #fafafa; padding: 10px; margin: 10px 0; }
+        body { font-family: Arial, sans-serif; background: #f4f7f6; padding: 20px; text-align: right; }
+        .container { background: white; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .item { border-right: 4px solid #007bff; background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 4px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔐 لوحة تحكم الإدارة</h1>
+        <h1>🔐 لوحة التحكم</h1>
+        <p>مرحباً بك في نظام الإدارة.</p>
         
         <h3>الاستبيانات المستلمة:</h3>
         {% for item in surveys %}
             <div class="item">
                 <strong>الرقم: {{ item.id }}</strong>
-                <p>{{ item.feedback }}</p>
+                <p>الرسالة: {{ item.feedback }}</p>
                 <small>التاريخ: {{ item.created_at }}</small>
             </div>
         {% else %}
-            <p>لا توجد استبيانات حالياً.</p>
+            <p>لا توجد استبيانات مسجلة حتى الآن.</p>
         {% endfor %}
 
         <hr>
