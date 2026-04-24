@@ -167,7 +167,21 @@ def login():
 def admin_panel():
     # Only logged-in users can see this
     surveys = Survey.query.all()
-    return render_template('admin.html', surveys=surveys) 
+    return render_template('admin.html', surveys=surveys)
+
+@app.route('/delete_survey/<int:id>')
+@login_required
+def delete_survey(id):
+    # البحث عن الرسالة برقم المعرف الخاص بها
+    message_to_delete = db.session.get(Survey, id)
+    
+    if message_to_delete:
+        db.session.delete(message_to_delete)
+        db.session.commit()
+        flash('تم حذف الرسالة بنجاح')
+    
+    return redirect(url_for('admin_panel'))
+
 @app.route('/logout')
 def logout():
     logout_user()
