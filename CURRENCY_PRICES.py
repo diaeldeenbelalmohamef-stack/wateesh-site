@@ -43,6 +43,33 @@ def save_to_db(filename):
     cursor.execute("INSERT INTO content (image_path) VALUES (?)", (filename,))
     conn.commit()
     conn.close()
+ def create_tables():
+    conn = sqlite3.connect('wateesh.db')
+    cursor = conn.cursor()
+    
+    # إنشاء جدول المحتوى (للصور)
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS content (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            image_path TEXT NOT NULL
+        )
+    ''')
+    
+    # إنشاء جدول الأخبار (عشان الـ Loop بتاع الأخبار ما يضربش)
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS news (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            date_posted TEXT
+        )
+    ''')
+    
+    conn.commit()
+    conn.close()
+    print("تم إنشاء الجداول بنجاح!")
+
+# نفذ الدالة دي مرة واحدة
+create_tables()   
 
 # تحديد الصفحة التي يتم توجيه المستخدم إليها إذا حاول الدخول وهو غير مسجل
 login_manager.login_view = 'login'
