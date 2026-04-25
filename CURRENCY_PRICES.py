@@ -97,10 +97,24 @@ with app.app_context():
 def home():
     conn = sqlite3.connect('wateesh.db')
     cursor = conn.cursor()
+    
+    # 1. جلب الصور
     cursor.execute("SELECT image_path FROM content")
-    images = cursor.fetchall() # دي هتجيب كل أسماء الصور في قائمة
+    images = cursor.fetchall()
+    
+    # 2. جلب الأخبار (لو عندك جدول للأخبار)
+    cursor.execute("SELECT title, date_posted FROM news ORDER BY id DESC")
+    news_list = cursor.fetchall()
+    
     conn.close()
-    return render_template('home.html', images=images)
+    
+    # نبعت كل البيانات في سطر الـ return
+    return render_template('home.html', 
+                           images=images, 
+                           news=news_list, 
+                           usd_price=1200) # أو السعر اللي بتجيبه من الـ API
+
+
 @app.route('/products')
 def products():
     all_products = Product.query.all()
