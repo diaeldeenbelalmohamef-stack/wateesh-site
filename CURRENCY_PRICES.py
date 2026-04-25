@@ -9,7 +9,7 @@ from flask_login import UserMixin
 from flask_login import login_user
 from flask_login import logout_user
 from flask import request, render_template
-import sqlite3
+import sqlite3 
 
 
 
@@ -33,6 +33,13 @@ app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+def save_to_db(filename):
+    conn = sqlite3.connect('wateesh.db') # تأكد من اسم ملف قاعدتك
+    cursor = conn.cursor()
+    # لنفترض أن اسم الجدول content وفيه عمود لاسم الصورة
+    cursor.execute("INSERT INTO content (image_path) VALUES (?)", (filename,))
+    conn.commit()
+    conn.close()
 
 # تحديد الصفحة التي يتم توجيه المستخدم إليها إذا حاول الدخول وهو غير مسجل
 login_manager.login_view = 'login'
