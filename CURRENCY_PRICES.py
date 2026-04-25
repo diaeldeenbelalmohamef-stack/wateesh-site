@@ -43,7 +43,7 @@ def save_to_db(filename):
     cursor.execute("INSERT INTO content (image_path) VALUES (?)", (filename,))
     conn.commit()
     conn.close()
- def create_tables():
+def create_tables():
     conn = sqlite3.connect('wateesh.db')
     cursor = conn.cursor()
     
