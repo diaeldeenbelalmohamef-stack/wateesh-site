@@ -185,7 +185,20 @@
                 {% endfor %}
             </ul>
         </section>
-
+        <section>
+            <h2>🖼️ معرض الصور المرفوعة</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px;">
+                {% for img in images %}
+                <div style="background: var(--accent-color); padding: 5px; border-radius: 10px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+                    <img src="{{ url_for('static', filename=img[0]) }}" alt="Content" 
+                         style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                    <p style="font-size: 0.8em; margin-top: 5px; color: #ccc;">{{ img[0] }}</p>
+                </div>
+                {% else %}
+                <p style="text-align: center; grid-column: 1 / -1; color: #888;">لا توجد صور مرفوعة حالياً.</p>
+                {% endfor %}
+            </div>
+        </section>
         <section>
             <h2>💻 طلب خدمة برمجة</h2>
             <div style="text-align: center; padding: 20px;">

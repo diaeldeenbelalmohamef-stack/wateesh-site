@@ -10,13 +10,14 @@ from flask_login import login_user
 from flask_login import logout_user
 from flask import request, render_template
 import sqlite3 
-
+from flask import redirect, url_for
 
 
 
 
 app = Flask(__name__)
 app.secret_key = 'wateesh_2026_safe'
+
 # إعداد مسار لحفظ الملفات (تأكد إن المجلد موجود)
 # تحديد المجلد الرئيسي كـ static مباشرة
 UPLOAD_FOLDER = 'static'
@@ -33,6 +34,8 @@ app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+
 def save_to_db(filename):
     conn = sqlite3.connect('wateesh.db') # تأكد من اسم ملف قاعدتك
     cursor = conn.cursor()
@@ -92,12 +95,12 @@ with app.app_context():
 
 @app.route('/')
 def home():
-    news = [
-        {"title": "خصم كبير بمناسبة الافتتاح", "date_posted": "2026-04-24"},
-        {"title": "وصلت تشكيلة الصيف الجديدة", "date_posted": "2026-04-23"}
-    ]
-    return render_template('home.html', news=news)
-
+    conn = sqlite3.connect('wateesh.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT image_path FROM content")
+    images = cursor.fetchall() # دي هتجيب كل أسماء الصور في قائمة
+    conn.close()
+    return render_template('home.html', images=images)
 @app.route('/products')
 def products():
     all_products = Product.query.all()
@@ -193,18 +196,17 @@ def median():
 def add_content():
     file = request.files.get('file')
     if file:
-        file_path = os.path.join('static', file.filename)
-        file.save(file_path)
+        filename = file.filename
+        file.save(os.path.join('static', filename))
         
-        # بدل ما نرجع نص، نرجع صفحة HTML بسيطة تعرض الصورة اللي اترفت
-        return f'''
-            <h1>تم رفع الصورة بنجاح!</h1>
-            <p>اسم الملف: {file.filename}</p>
-            <img src="/static/{file.filename}" width="300" style="border: 2px solid #000;">
-            <br><br>
-            <a href="/">العودة للرئيسية</a>
-        '''
+        # الخطوة الجديدة: حفظ الاسم في قاعدة البيانات
+        save_to_db(filename)
+        
+        # العودة للصفحة الرئيسية بدلاً من عرض صفحة بيضاء
+        return redirect(url_for('home')) 
     return "فشل الرفع"
+
+
 # --- 4. تشغيل السيرفر ---
 
 if __name__ == "__main__":
