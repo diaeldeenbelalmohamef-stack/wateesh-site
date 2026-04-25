@@ -180,18 +180,20 @@ def median():
 
 @app.route('/add_content', methods=['POST'])
 def add_content():
-    # سحب الملف من الـ HTML (الاسم اللي في name="file")
     file = request.files.get('file')
-    
     if file:
-        # تحديد المسار ليتم الحفظ في static مباشرة
-        # التعديل الصحيح: احفظ في static مباشرة بدون uploads
         file_path = os.path.join('static', file.filename)
         file.save(file_path)
         
-        return f"تم حفظ الملف بنجاح في مجلد الـ static باسم: {file.filename}"
-    
-    return "فشل الرفع، تأكد من اختيار ملف."
+        # بدل ما نرجع نص، نرجع صفحة HTML بسيطة تعرض الصورة اللي اترفت
+        return f'''
+            <h1>تم رفع الصورة بنجاح!</h1>
+            <p>اسم الملف: {file.filename}</p>
+            <img src="/static/{file.filename}" width="300" style="border: 2px solid #000;">
+            <br><br>
+            <a href="/">العودة للرئيسية</a>
+        '''
+    return "فشل الرفع"
 # --- 4. تشغيل السيرفر ---
 
 if __name__ == "__main__":
