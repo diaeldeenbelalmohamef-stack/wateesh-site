@@ -14,7 +14,8 @@ from flask import request, render_template
 app = Flask(__name__)
 app.secret_key = 'wateesh_2026_safe'
 # إعداد مسار لحفظ الملفات (تأكد إن المجلد موجود)
-UPLOAD_FOLDER = 'static/uploads'
+# تحديد المجلد الرئيسي كـ static مباشرة
+UPLOAD_FOLDER = 'static'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # لرفع فيديوهات بمساحة كبيرة (مثلاً 100 ميجا)
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
@@ -176,22 +177,20 @@ def success():
 def median():
     return render_template('median.html')
 
+
 @app.route('/add_content', methods=['POST'])
 def add_content():
-    if 'file' not in request.files:
-        return "لا يوجد ملف في الطلب"
+    # سحب الملف من الـ HTML (الاسم اللي في name="file")
+    file = request.files.get('file')
     
-    file = request.files['file']
-    
-    if file.filename == '':
-        return "لم يتم اختيار ملف"
-
     if file:
-        # حفظ الملف في المجلد المحدد
-        path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(path)
-        return f"تم رفع الملف بنجاح وحفظه في: {path}"
-
+        # تحديد المسار ليتم الحفظ في static مباشرة
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(file_path)
+        
+        return f"تم حفظ الملف بنجاح في مجلد الـ static باسم: {file.filename}"
+    
+    return "فشل الرفع، تأكد من اختيار ملف."
 # --- 4. تشغيل السيرفر ---
 
 if __name__ == "__main__":
