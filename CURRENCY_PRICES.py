@@ -185,7 +185,8 @@ def add_content():
     
     if file:
         # تحديد المسار ليتم الحفظ في static مباشرة
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        # التعديل الصحيح: احفظ في static مباشرة بدون uploads
+        file_path = os.path.join('static', file.filename)
         file.save(file_path)
         
         return f"تم حفظ الملف بنجاح في مجلد الـ static باسم: {file.filename}"
