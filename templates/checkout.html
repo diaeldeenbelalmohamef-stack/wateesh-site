@@ -119,41 +119,50 @@
     </nav>
 
     <main class="checkout-container">
-        <h2>إتمام عملية الشراء 🛒</h2>
+    <h2>إتمام عملية الشراء 🛒</h2>
 
-        <div class="order-summary">
-            <img src="{{ product.image_url if product.image_url else url_for('static', filename='default_product.png') }}" alt="{{ product.name }}">
-            <h3>{{ product.name }}</h3>
-            <p>السعر الإجمالي: <span style="color: var(--primary-color); font-weight: bold; font-size: 1.2em;">{{ product.price }} ج.س</span></p>
+    <div class="order-summary">
+        <img src="{{ url_for('static', filename=product[3] if product[3] else 'default_product.png') }}" 
+             alt="{{ product[1] }}" class="product-img">
+        
+        <h3>{{ product[1] }}</h3> <p>السعر الفردي: <span style="color: var(--primary-color); font-weight: bold;">{{ product[2] }} ج.س</span></p>
+    </div>
+
+    <form method="POST">
+        <input type="hidden" name="subtotal" value="{{ product[2] }}">
+        <input type="hidden" name="product_id" value="{{ product[0] }}">
+
+        <div class="form-group">
+            <label>الكمية:</label>
+            <input type="number" name="quantity" value="1" min="1" required>
         </div>
 
-        <form method="POST">
-        <input type="hidden" name="subtotal" value="5000"> ```    <div class="form-group">
-                <label>الاسم الكامل:</label>
-                <input type="text" name="name" placeholder="أدخل اسمك الثلاثي" required>
-            </div>
+        <div class="form-group">
+            <label>الاسم الكامل:</label>
+            <input type="text" name="name" placeholder="أدخل اسمك الثلاثي" required>
+        </div>
 
-            <div class="form-group">
-                <label>رقم الهاتف:</label>
-                <input type="tel" name="phone" placeholder="01xxxxxxxxx" required>
-            </div>
+        <div class="form-group">
+            <label>رقم الهاتف:</label>
+            <input type="tel" name="phone" placeholder="01xxxxxxxxx" required>
+        </div>
 
-            <div class="form-group">
-                <label>طريقة الدفع:</label>
-                <select name="payment">
-                    <option value="Cash">دفع عند الاستلام</option>
-                    <option value="Vodafone Cash">فودافون كاش</option>
-                    <option value="Bank Transfer">تحويل بنكي (بنكك)</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <label>طريقة الدفع:</label>
+            <select name="payment">
+                <option value="Cash">دفع عند الاستلام</option>
+                <option value="Vodafone Cash">فودافون كاش</option>
+                <option value="Bank Transfer">تحويل بنكي (بنكك)</option>
+            </select>
+        </div>
 
-            <button type="submit" class="confirm-btn">تأكيد طلب الشراء ✅</button>
-        </form>
-        
-        <p style="text-align: center; margin-top: 20px;">
-            <a href="{{ url_for('products') }}" style="color: #888; text-decoration: none; font-size: 0.9em;">← العودة للمتجر</a>
-        </p>
-    </main>
+        <button type="submit" class="confirm-btn">تأكيد طلب الشراء ✅</button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 20px;">
+        <a href="{{ url_for('products') }}" style="color: #888; text-decoration: none; font-size: 0.9em;">← العودة للمتجر</a>
+    </p>
+</main>
 
     <footer>
         <p>WATEESH 2026 - جميع الحقوق محفوظة</p>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>إضافة منتج جديد - وتيش</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 50px; }
+        .admin-form { background: white; max-width: 500px; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input, textarea, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background-color: #27ae60; color: white; cursor: pointer; font-weight: bold; border: none; }
+        button:hover { background-color: #2ecc71; }
+    </style>
+    
+</head>
+<body>
+
+<div class="admin-form">
+    <h2 style="text-align: center;">إضافة منتج جديد للمتجر 📦</h2>
+    <form method="POST">
+        <label>اسم المنتج:</label>
+        <input type="text" name="name" placeholder="مثلاً: ساعة ذكية" required>
+
+        <label>السعر (ج.س):</label>
+        <input type="number" name="price" placeholder="مثلاً: 15000" required>
+
+        <label>اختر صورة المنتج:</label>
+    <select name="image" required>
+    <option value="">-- اختر من الصور المرفوعة سابقاً --</option>
+    {% for img in images %}
+        <option value="{{ img }}">{{ img }}</option>
+    {% endfor %}
+    </select>
+        <small style="color: #666;">(تأكد من وضع الصورة في مجلد static بنفس الاسم)</small>
+
+        <label>وصف المنتج:</label>
+        <textarea name="description" rows="4" placeholder="اكتب مواصفات المنتج هنا..."></textarea>
+
+        <button type="submit">حفظ المنتج في المتجر ✅</button>
+    </form>
+    <p style="text-align: center;"><a href="{{ url_for('products') }}">← العودة للمتجر</a></p>
+</div>
+
+</body>
+</html>

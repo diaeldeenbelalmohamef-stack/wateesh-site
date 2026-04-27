@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>فاتورة الشراء - وتيش</title>
+    <style>
+        .invoice-box { max-width: 600px; margin: auto; padding: 30px; border: 1px solid #eee; font-family: 'Arial', sans-serif; }
+        .details { margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .total { font-size: 1.5em; color: #2ecc71; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="invoice-box">
+        <h1>تم استلام طلبك بنجاح! 🎉</h1>
+        
+        <div class="details">
+            <h3>بيانات العميل:</h3>
+            <p>الاسم: <strong>{{ customer }}</strong></p>
+            <p>رقم الهاتف: <strong>{{ phone }}</strong></p>
+            <p>طريقة الدفع: <strong>{{ payment }}</strong></p>
+        </div>
+
+        <div class="details">
+            <h3>تفاصيل المنتج:</h3>
+            <p>المنتج: <strong>{{ product[1] }}</strong></p>
+            <p>الكمية: <strong>{{ quantity }}</strong></p>
+            <p>سعر الوحدة: <strong>{{ product[2] }} ج.س</strong></p>
+        </div>
+
+        <div class="total">
+            المبلغ الإجمالي المطلوب: {{ total }} ج.س
+        </div>
+
+        <p style="margin-top: 30px; color: #666;">
+            شكراً لثقتك في متجر "وتيش". سيتم التواصل معك قريباً لتأكيد موعد التسليم.
+        </p>
+        
+        <button onclick="window.print()">طباعة الفاتورة 🖨️</button>
+        <br><br>
+        <a href="{{ url_for('products') }}">العودة للمتجر</a>
+    </div>
+</body>
+</html>

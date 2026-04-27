@@ -116,15 +116,16 @@
 
         <div class="feedback-section">
             <h3 style="color: var(--primary-color);">أرسل لنا رأيك</h3>
-            <form action="{{ url_for('contact') }}" method="POST">
-                <select name="rating">
-                    <option value="excellent">ممتاز ⭐⭐⭐</option>
-                    <option value="good">جيد ⭐⭐</option>
-                    <option value="average">عادي ⭐</option>
-                </select>
-                <textarea name="feedback" rows="4" placeholder="اكتب ملاحظاتك هنا..." required></textarea>
-                <button type="submit" class="submit-btn">إرسال البيانات ✅</button>
-            </form>
+
+        <form action="{{ url_for('contact') }}" method="POST">
+                <label>تقييمك:</label>
+            <input type="number" name="rating" min="1" max="5" required>
+    
+             <label>رأيك يهمنا:</label>
+             <textarea name="feedback" required></textarea>
+    
+             <button type="submit">إرسال</button>
+        </form>
         </div>
 
         <div style="margin-top: 30px;">

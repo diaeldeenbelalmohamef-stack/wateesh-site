@@ -24,134 +24,130 @@
 
         /* القائمة العلوية */
         nav {
-            text-align: center;
             background: var(--card-bg);
-            padding: 15px;
+            padding: 10px 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             position: sticky;
             top: 0;
             z-index: 1000;
+            display: flex;
+            justify-content: center;
         }
 
-        nav a {
-            color: var(--text-color);
-            font-weight: bold;
-            margin: 0 15px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; flex-wrap: wrap; }
+        nav ul li { margin: 5px 10px; }
+        nav a { color: var(--text-color); font-weight: bold; text-decoration: none; transition: 0.3s; padding: 8px 12px; }
         nav a:hover { color: var(--primary-color); }
 
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
-        }
+        .admin-link { background-color: #27ae60 !important; color: white !important; border-radius: 5px; }
+
+        .container { max-width: 1200px; margin: auto; padding: 20px; }
 
         .product-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 25px; 
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+            gap: 20px; 
             padding: 20px 0;
         }
 
+        /* الكارت الأساسي مع إضافة النعومة في الحركة */
         .product-card { 
             background: var(--card-bg);
             border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 15px; 
-            padding: 20px; 
+            border-radius: 12px; 
+            padding: 12px; 
             text-align: center; 
-            transition: transform 0.3s, border-color 0.3s; 
-            box-shadow: 0 8px 16px rgba(0,0,0,0.4); 
+            transition: all 0.3s ease; /* دي اللي بتخلي كل التغييرات ناعمة */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
+        /* تأثير الـ Hover والظل المتوهج اللي طلبته */
         .product-card:hover { 
             transform: translateY(-10px); 
             border-color: var(--primary-color);
+            box-shadow: 0 12px 25px rgba(232, 73, 29, 0.2); 
         }
 
-        .product-card img {
+        .product-img {
             width: 100%;
-            height: 220px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            height: 160px;
+            object-fit: cover; 
+            border-radius: 8px;
+            margin-bottom: 10px;
             background: #0f3460;
+            transition: transform 0.3s ease;
         }
 
-        .product-card h3 {
-            margin: 10px 0;
-            font-size: 1.4em;
-        }
+        /* حركة بسيطة للصورة لما تقرب منها */
+        .product-card:hover .product-img { transform: scale(1.03); }
 
-        .product-card p {
-            font-size: 0.9em;
-            color: #ccc;
-            height: 50px;
+        .product-card h3 { font-size: 1.1em; margin: 10px 0 5px; }
+
+        .description {
+            font-size: 0.85em;
+            height: 40px;
             overflow: hidden;
-            margin-bottom: 15px;
+            color: #ccc;
+            margin-bottom: 10px;
         }
 
-        .price { 
-            color: var(--primary-color); 
-            font-size: 1.5em; 
-            font-weight: bold; 
-            margin: 10px 0;
-            display: block;
-        }
+        .price { color: var(--primary-color); font-size: 1.1em; font-weight: bold; margin-bottom: 12px; }
 
         .buy-btn { 
             background: var(--primary-color); 
             color: white; 
-            padding: 12px 25px; 
-            border-radius: 8px; 
+            padding: 10px; 
+            border-radius: 6px; 
             text-decoration: none; 
-            display: block; 
+            font-size: 0.9em;
             font-weight: bold;
             transition: 0.3s; 
-            margin-top: 10px;
         }
 
+        /* تأثير الزرار لما ينور */
         .buy-btn:hover { 
             background: #ff5722; 
-            box-shadow: 0 5px 15px rgba(232, 73, 29, 0.4);
+            box-shadow: 0 0 15px rgba(232, 73, 29, 0.4);
+            transform: scale(1.05);
         }
 
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
+        footer { text-align: center; padding: 30px; color: #666; font-size: 0.9em; }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="{{ url_for('home') }}">الرئيسية</a>
-        <a href="{{ url_for('products') }}">عرض المنتجات</a>
-        <a href="{{ url_for('median') }}">الميديا</a>
-        <a href="{{ url_for('about') }}">من نحن</a>
+        <ul>
+            <li><a href="{{ url_for('home') }}">الرئيسية</a></li>
+            <li><a href="{{ url_for('products') }}">المتجر</a></li>
+            <li><a href="{{ url_for('median') }}">الميديا</a></li>
+            <li><a href="{{ url_for('about') }}">من نحن</a></li>
+            
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('add_product') }}" class="admin-link">➕ لوحة التحكم</a></li>
+                <li><a href="{{ url_for('logout') }}" style="color: #e74c3c;">خروج</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">دخول الإدارة</a></li>
+            {% endif %}
+        </ul>
     </nav>
 
     <main class="container">
-        <h1 style="text-align: center; margin: 40px 0; color: var(--primary-color); font-size: 2.5em;">منتجات WATEESH الحصرية</h1>
+        <h1 style="text-align: center; margin: 30px 0; color: var(--primary-color); font-size: 2em;">منتجات WATEESH الحصرية</h1>
         
         <div class="product-grid">
             {% for p in products %}
             <div class="product-card">
-                <div>
-                    <img src="{{ p.image_url if p.image_url else url_for('static', filename='default_product.png') }}" alt="{{ p.name }}">
-                    <h3>{{ p.name }}</h3>
-                    <p>{{ p.description if p.description else 'وصف المنتج غير متوفر حالياً.' }}</p>
-                </div>
-                <div>
-                    <span class="price">{{ p.price }} ج.س</span>
-                    <a href="{{ url_for('checkout', product_id=p.id) }}" class="buy-btn">شراء الآن 🛒</a>
-                </div>
+                <img src="{{ url_for('static', filename=p[3] if p[3] else 'default_product.png') }}" 
+                     alt="{{ p[1] }}" class="product-img">
+
+                <h3>{{ p[1] }}</h3>
+                <p class="description">{{ p[4] }}</p>
+                <span class="price">{{ p[2] }} ج.س</span>
+                
+                <a href="{{ url_for('checkout', product_id=p[0]) }}" class="buy-btn">شراء الآن 🛒</a>
             </div>
             {% endfor %}
         </div>
@@ -163,3 +159,4 @@
 
 </body>
 </html>
+   

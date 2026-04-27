@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>تسجيل الدخول - واتيش</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .login-container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .flash-messages { color: red; font-size: 0.9em; margin-bottom: 10px; list-style: none; padding: 0; }
+    </style>
 </head>
 <body>
+  <div class="login-container">
     <h2>تسجيل دخول الإدارة</h2>
 
     {% with messages = get_flashed_messages() %}
       {% if messages %}
+      <ul class="flash-messages"></ul>
         {% for message in messages %}
-          <p style="color: red;">{{ message }}</p>
+         <li>{{ message }}</li>
         {% endfor %}
+        </ul>
       {% endif %}
     {% endwith %}
 
@@ -22,5 +32,8 @@
         <br><br>
         <button type="submit">دخول</button>
     </form>
+    <br>
+    <a href="{{ url_for('home') }}" style="text-decoration: none; font-size: 0.8em; color: #666;">الرجوع للمتجر</a>
+  </div> 
 </body>
 </html>
