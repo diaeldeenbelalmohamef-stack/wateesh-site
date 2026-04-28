@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WATEESH | باحة الوتيشين</title>
     
-    <link rel="shortcut icon" href="{{ url_for('static', filename='logo_wateesh.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo_wateesh.ico') }}?v=1" type="image/x-icon">
     
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 
-    <style>
-        /* ... كود الـ CSS الخاص بك يبقى كما هو ... */
     <style>
         :root {
             --primary-color: #e8491d;
@@ -130,7 +128,6 @@
     <header>
         <h1>موقع WATEESH</h1>
         <p>مرحباً بك في مراتع كردفان الغرة بلد الوتيشين والوتيشات</p>
-        <link rel="shortcut icon" href="{{ url_for('static', filename='LOGO WATEESH.ico') }}" type="image/x-icon">
     </header>
 
     <nav>
@@ -140,7 +137,6 @@
         <a href="{{ url_for('products') }}">المتجر</a>
         <a href="{{ url_for('about') }}">من نحن</a>
         <a href="{{ url_for('contact') }}">تواصل معنا</a>
-        
     </nav>
     
     <main>
@@ -191,6 +187,7 @@
                 {% endfor %}
             </ul>
         </section>
+
         <section>
             <h2>🖼️ معرض الصور المرفوعة</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px;">
@@ -205,13 +202,7 @@
                 {% endfor %}
             </div>
         </section>
-        <section>
-            <h2>💻 طلب خدمة برمجة</h2>
-            <div style="text-align: center; padding: 20px;">
-                <p>هل تبحث عن حلول برمجية مخصصة لعملك؟</p>
-                <a href="{{ url_for('contact') }}" class="btn-primary">تواصل معنا لطلب عرض سعر</a>
-            </div>
-        </section>
+
     </main>
 
     <footer>
