@@ -156,7 +156,7 @@ class Product(db.Model):
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text)
-    image_url = db.Column(db.String(200))
+    image_url = db.Column(db.String(200)) # تأكد من وجود هذا السطر
 class Gallery(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
