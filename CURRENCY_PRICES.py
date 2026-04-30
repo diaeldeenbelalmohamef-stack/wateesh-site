@@ -167,7 +167,10 @@ class Gallery(db.Model):
 class Survey(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     feedback = db.Column(db.Text)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    # بدل UTC، خليه يستخدم وقت الجهاز المحلي
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    
+   
 
 # --- 2. إنشاء الجداول وإضافة البيانات (خارج الكلاسات) ---
 
