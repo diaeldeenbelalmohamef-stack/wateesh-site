@@ -422,13 +422,13 @@ def median():
 def add_content():
     file = request.files.get('file')
     if file:
-        filename = file.filename
-        file.save(os.path.join('static', filename))
+        # هنا بنستخدم secure_filename اللي كانت باهتة
+        filename = secure_filename(file.filename) 
         
-        # الخطوة الجديدة: حفظ الاسم في قاعدة البيانات
+        # التأكد من حفظ الملف بالاسم الآمن
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
         save_to_db(filename)
-        
-        # العودة للصفحة الرئيسية بدلاً من عرض صفحة بيضاء
         return redirect(url_for('home')) 
     return "فشل الرفع"
 
