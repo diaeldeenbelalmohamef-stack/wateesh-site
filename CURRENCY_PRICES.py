@@ -424,6 +424,10 @@ def add_content():
     if file:
         # هنا بنستخدم secure_filename اللي كانت باهتة
         filename = secure_filename(file.filename) 
+        if file:
+        # هنا الدالة 'نورت' لأننا استخدمناها
+        # بتشيل أي مسافات أو رموز غريبة من اسم الملف
+            filename = secure_filename(file.filename)
         
         # التأكد من حفظ الملف بالاسم الآمن
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
