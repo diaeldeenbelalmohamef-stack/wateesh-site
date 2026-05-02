@@ -1,0 +1,54 @@
+/* إعدادات الألوان والخطوط (الـ SaaS Palette) */
+:root {
+    --primary-indigo: #4f46e5;    /* لون الـ Indigo الأساسي */
+    --bg-page: #f9fafb;           /* خلفية الصفحة الرمادية الهادية */
+    --card-bg: #ffffff;           /* خلفية الكروت بيضاء */
+    --text-dark: #1f2937;         /* لون للنصوص الرئيسية */
+    --text-muted: #6b7280;        /* لون للنصوص الفرعية */
+    --radius: 12px;               /* حواف دائرية ناعمة */
+}
+
+body {
+    background-color: var(--bg-page);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+    margin: 0;
+    padding: 20px;
+}
+
+/* الكارت: ده الأساس اللي هنحط جواه البيانات */
+.card {
+    background: var(--card-bg);
+    padding: 24px;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 600px; /* تحكم في العرض عشان ميبقاش عريض أوي */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* الزرار: روح الـ SaaS */
+.btn-indigo {
+    background-color: var(--primary-indigo);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease; /* سر الجمال في الحركة الناعمة */
+}
+
+.btn-indigo:hover {
+    background-color: #4338ca; /* لون أغمق سنة عند الوقوف بالماوس */
+    transform: translateY(-1px); /* بيطلع لفوق سنة */
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+}
+
+/* عنوان القسم */
+.header-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
